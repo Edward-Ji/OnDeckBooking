@@ -1,0 +1,57 @@
+<LoginField>:
+    orientation: "vertical"
+    spacing: 16
+    size_hint_y: None
+    height: self.minimum_height
+
+    BoxLayout:
+        size_hint: .6, None
+        height: 45
+        pos_hint: {"center_x": .5}
+
+        MainLabel:
+            size_hint: None, 1
+            width: 120
+            text: "Username"
+        MainInput:
+            id: _usr_input
+            allowed_pat: r'\w'
+            allowed_len: 20
+            focus: True
+            hint_text: "case sensitive"
+
+    BoxLayout:
+        size_hint: .6, None
+        height: 45
+        pos_hint: {"center_x": .5}
+
+        MainLabel:
+            size_hint: None, 1
+            width: 120
+            text: "Password"
+        PasswordInput:
+            id: _psw_input
+            hint_text: "123456 by default"
+
+    MainButton:
+        text: "Login"
+        pos_hint: {"center_x": .5}
+        on_press: root.login(_usr_input, _psw_input)
+
+<LoginScreen@Screen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: 3
+        spacing: 32
+        size_hint_y: None
+        height: self.minimum_height
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+        Label:
+            markup: True
+            font_size: "42dp"
+            text: "[b][color=#808080]Kimberly [color=#ff9900]Quest[/b]"
+            size_hint_y: None
+            height: self.texture_size[1] + 12
+
+        LoginField

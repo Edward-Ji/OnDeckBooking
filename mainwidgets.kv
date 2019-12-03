@@ -1,0 +1,57 @@
+#:set white 1, 1, 1, 1
+#:set grey .4, .4, .4, 1
+#:set orange 1, .45, .1, 1
+#:set orange_down 1, .45, .1, .85
+#:set orange_trans 1, .45, .1, .5
+
+<MainLabel@Label>:
+    font_size: "21dp"
+    color: orange
+    size_hint: None, None
+#    size: self.texture_size
+
+#<TitleLabel@Label>:
+#    title: ''
+#
+#    canvas.before:
+#        Color:
+#            rgba: oragne
+#        Rectangle:
+#            size: self.size
+#            pos: self.pos
+#
+#    markup: True
+#    font_size: "32dp"
+#    color: grey
+#    text: "[b]{}[/b]".format(self.title)
+#    size_hint: None, None
+#    size: tuple(map(lambda x: x + 12, self.texture_size))
+#    pos_hint: {"center_x": .5}
+
+<MainButton@Button>:
+    font_size: "24dp"
+    color: white
+    background_color: orange if self.state == "normal" else orange_down
+    background_down: ''
+    background_normal: ''
+    size_hint: None, None
+    size: tuple(map(lambda x: x + 24, self.texture_size))
+
+<MainInput@TextInput>:
+    allowed_pat: r"."
+    allowed_len: 99
+
+    write_tab: False
+    multiline: False
+    font_size: "24dp"
+    foreground_color: white
+    background_color: grey
+    selection_color: orange_trans
+    cursor_color: orange
+    size_hint_y: None
+    height: 42
+
+<PasswordInput@MainInput>:
+    password: True
+
+<MainPopup@Popup>:
