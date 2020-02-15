@@ -13,12 +13,15 @@
             size_hint: None, 1
             width: 120
             text: "Username"
+            color: orange
         MainInput:
             id: _usr_input
-            allowed_pat: r'\w'
+            allowed_pat: r'\w|-'
             allowed_len: 20
             focus: True
-            hint_text: "case sensitive"
+            hint_text: "contact the crew if you don't know"
+
+            text: "SPeter"
 
     BoxLayout:
         size_hint: .6, None
@@ -29,16 +32,30 @@
             size_hint: None, 1
             width: 120
             text: "Password"
+            color: orange
         PasswordInput:
             id: _psw_input
             hint_text: "123456 by default"
 
+            text: "123456"
+
     MainButton:
         text: "Login"
         pos_hint: {"center_x": .5}
-        on_press: root.login(_usr_input, _psw_input)
+        on_release: root.login(_usr_input, _psw_input)
 
 <LoginScreen@Screen>:
+    name: "login"
+
+    AnimationLayout:
+        cruise_ship: _cruise_ship
+
+        CruiseImage:
+            id: _cruise_ship
+            source: "res/cruise_ship.png"
+            size: self.texture_size
+            pos: 0, 0
+
     BoxLayout:
         orientation: "vertical"
         padding: 3
@@ -50,8 +67,9 @@
         Label:
             markup: True
             font_size: "42dp"
-            text: "[b][color=#808080]Kimberly [color=#ff9900]Quest[/b]"
+            text: "[b][color=#808080]Kimberley [color=#ff9900]Quest[/b]"
             size_hint_y: None
             height: self.texture_size[1] + 12
 
         LoginField
+

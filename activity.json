@@ -1,0 +1,190 @@
+{
+  "_default": {},
+  "details": {
+    "1": {
+      "name": "Glass bottom explorer",
+      "desc": "Experience a day on the reef and a short walk on one of the many remote beaches. Our glass bottom boat experience is second to none.",
+      "price": 120
+    },
+    "2": {
+      "name": "Flying to fishing",
+      "desc": "Take our helicopter transfer and walk to a fishing spot where the fish are always biting. Lunch will be the fish caught and cooked on the spot.",
+      "price": 300
+    },
+    "3": {
+      "name": "SCUBA adventure",
+      "desc": "Enjoy the whole day out in a SCUBA diving adventure. You will be transferred from the Kimberley Quest to a purpose-built pontoon, where you will dive and lunch in style (participants must be PADI certified for open water diving).",
+      "price": 160
+    }
+  },
+  "calendar": {
+    "1": {
+      "day": 1,
+      "easy": null,
+      "moderate": null,
+      "challenging": null
+    },
+    "2": {
+      "day": 2,
+      "easy": null,
+      "moderate": null,
+      "challenging": null
+    },
+    "3": {
+      "day": 3,
+      "easy": null,
+      "moderate": null,
+      "challenging": null
+    },
+    "4": {
+      "day": 4,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "5": {
+      "day": 5,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "6": {
+      "day": 6,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "7": {
+      "day": 7,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "8": {
+      "day": 8,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "9": {
+      "day": 9,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "10": {
+      "day": 10,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "11": {
+      "day": 11,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "12": {
+      "day": 12,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "13": {
+      "day": 13,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "14": {
+      "day": 14,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "15": {
+      "day": 1,
+      "easy": null,
+      "moderate": null,
+      "challenging": null
+    },
+    "16": {
+      "day": 2,
+      "easy": null,
+      "moderate": null,
+      "challenging": null
+    },
+    "17": {
+      "day": 3,
+      "easy": null,
+      "moderate": null,
+      "challenging": null
+    },
+    "18": {
+      "day": 4,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "19": {
+      "day": 5,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "20": {
+      "day": 6,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "21": {
+      "day": 7,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "22": {
+      "day": 8,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "23": {
+      "day": 9,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "24": {
+      "day": 10,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "25": {
+      "day": 11,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "26": {
+      "day": 12,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "27": {
+      "day": 13,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    },
+    "28": {
+      "day": 14,
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
+      "challenging": "SCUBA adventure"
+    }
+  }
+}

@@ -1,0 +1,96 @@
+<CalendarActivityButton>:
+    day: 0
+    text: "Choose\nActivity"
+    background_color: (grey if self.state == "normal" else grey_down) if self.day <= 3 else (orange if self.state == "normal" else orange_down)
+
+<CalendarMealButton@MainButton>:
+    text: "Meal Menu"
+
+<CalendarBlock>:
+    day: 0
+
+    orientation: "vertical"
+    spacing: 5
+
+    MainLabel:
+        text: "Day" + str(root.day)
+        color: grey
+
+    CalendarActivityButton:
+        day: root.day
+        size_hint: 1, 1
+
+    CalendarMealButton:
+        day: root.day
+        size_hint: 1, 1
+
+<CalendarLayout>:
+    rows: 2
+    cols: 7
+    padding: 10
+    spacing: 5
+
+<ActivityPickButton@MainButton+ToggleButtonBehavior>:
+    group: "activity_picker"
+    background_color: grey_light if self.state == "normal" else grey
+    text: "Book..." if self.state == "normal" else "Booked"
+    color: grey_dark
+
+<ActivityBlock>:
+    pick_btn: _pick_btn
+
+    orientation: "vertical"
+
+    MainScrollView:
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+
+            Image:
+                size_hint: None, None
+                width: root.width
+                height: self.width
+                source: root.img
+            MainLabel:
+                text_size: root.width, None
+                size: self.texture_size
+                text: root.name
+                color: white
+            MainLabel:
+                text_size: root.width, None
+                size: self.texture_size
+                text: root.desc
+                font_size: 15
+                color: grey_light
+            MainLabel:
+                pos_hint: {"center_x": .5}
+                text: "Price: ${:.2f}".format(root.price)
+                color: grey_light
+    ActivityPickButton:
+        id: _pick_btn
+        pos_hint: {"center_x": .5}
+        on_state: root.update(self.state)
+
+<ActivityLayout>:
+    spacing: 5
+
+<ActivityPicker>
+
+<MenuScreen@Screen>:
+    name: "menu"
+
+    BoxLayout:
+        orientation: "vertical"
+
+        MainBanner:
+            MainHeading:
+                heading: "Menu"
+                center_x: root.center_x
+
+        AlignLabel:
+            text: "Welcome aboard the Kimberley Quest!"
+            color: grey
+            left: 0
+
+        CalendarLayout

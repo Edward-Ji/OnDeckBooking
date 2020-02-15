@@ -1,11 +1,16 @@
 import binascii
 import hashlib
+from kivy.properties import StringProperty
 import os
 from tinydb import TinyDB, Query
 
-SALT = b"sr0te2eQ20Klubmyi"
+SALT = b"sr0te2eQ20Klubmyie"
+ACTIVITY_IMG_DIR = "res/activity_img"
 
-db = TinyDB("profile.json")
+db_guest = TinyDB("guest.json", indent=2)
+db_activity = TinyDB("activity.json", indent=2)
+tb_details = db_activity.table("details")
+tb_calendar = db_activity.table("calendar")
 query = Query()
 
 
@@ -16,18 +21,57 @@ def hash_psw(psw):
 
 
 def verify_psw(psw, stored_hash):
-    pwd_hash = hashlib.pbkdf2_hmac('sha512', psw.encode('utf-8'), SALT, 100000)
-    pwd_hash = binascii.hexlify(pwd_hash).decode('ascii')
-    return pwd_hash == stored_hash
+    return hash_psw(psw) == stored_hash
+
+
+class Activity:
+
+    def __init__(self, **kwargs):
+        self.name = kwargs.pop("name")
+        self.desc = kwargs.pop("desc")
+        self.price = kwargs.pop("price")
+        if "day" in kwargs:
+            self.day = kwargs.pop("day")
+
+    @property
+    def img(self):
+        img_name = self.name.lower().replace(' ', '_')
+        for root, dirs, files in os.walk(ACTIVITY_IMG_DIR):
+            for fname in files:
+                if img_name in fname:
+                    return os.path.join(root, fname)
+        return os.path.join(ACTIVITY_IMG_DIR, "activity_unknown.png")
+
+    @classmethod
+    def no_activity(cls):
+        return cls(name="No Activity",
+                   desc="Stay on the cruise and enjoy the natural eyesight and the wonderful facilities that we offer.",
+                   price=0)
+
+    @classmethod
+    def find(cls, name):
+        details = tb_details.search(query.name == name)[0]
+        return cls(**details)
+
+    @classmethod
+    def on_day(cls, day):
+        data = tb_calendar.search(query.day == day)[0]
+        activities = {}
+        for rating, name in data.items():
+            if rating != "day" and name:
+                activities[rating] = cls.find(name)
+        activities["no activity"] = cls.no_activity()
+        return activities
 
 
 class Guest:
-    logged_in = None
+
+    logged_in = StringProperty()
 
     @staticmethod
     def find(username):
         # return a dictionary of user profiles that match the username
-        return db.search(query.username == username)
+        return db_guest.search(query.username == username)
 
     @classmethod
     def login(cls, usr, psw):
@@ -37,9 +81,28 @@ class Guest:
         else:
             p_hash = found[0]["hash"]
             if p_hash == hash_psw(psw):
-                return None
+                cls.logged_in = usr
+                return
             else:
                 return "Incorrect password!"
 
+    @classmethod
+    def logout(cls):
+        cls.logged_in = None
 
-print(Guest.find("Smith"))
+    @classmethod
+    def get_booked(cls, day):
+        profile = db_guest.search(query.username == cls.logged_in)[0]
+        return profile["bookings"][day-1]
+
+    @classmethod
+    def book_activity(cls, day, activity):
+        if not cls.logged_in:
+            return
+
+        def update_booking(d, a):
+            def transform(doc):
+                doc["bookings"][d-1] = a
+            return transform
+
+        db_guest.update(update_booking(day, activity), query.username == cls.logged_in)

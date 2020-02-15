@@ -1,35 +1,46 @@
 #:set white 1, 1, 1, 1
+#:set grey_light .8, .8, .8, 1
 #:set grey .4, .4, .4, 1
+#:set grey_down .4, .4, .4, .8
+#:set grey_dark .1, .1, .1, 1
 #:set orange 1, .45, .1, 1
-#:set orange_down 1, .45, .1, .85
+#:set orange_down 1, .45, .1, .8
 #:set orange_trans 1, .45, .1, .5
+
+<MainBanner@BoxLayout>:
+    color: .4, .4, .4, 1
+    canvas.before:
+        Color:
+            rgba: self.color
+        Rectangle:
+            size: root.width, self.height
+            pos: self.pos
+
+    size_hint: 1, None
+    height: self.minimum_height
 
 <MainLabel@Label>:
     font_size: "21dp"
-    color: orange
+    color: grey
     size_hint: None, None
-#    size: self.texture_size
 
-#<TitleLabel@Label>:
-#    title: ''
-#
-#    canvas.before:
-#        Color:
-#            rgba: oragne
-#        Rectangle:
-#            size: self.size
-#            pos: self.pos
-#
-#    markup: True
-#    font_size: "32dp"
-#    color: grey
-#    text: "[b]{}[/b]".format(self.title)
-#    size_hint: None, None
-#    size: tuple(map(lambda x: x + 12, self.texture_size))
-#    pos_hint: {"center_x": .5}
+<AlignLabel@MainLabel>:
+    padding: 10, 10
+    text_size: self.size
+    halign: "left"
+    valign: "center"
+    size_hint_x: 1
+    left: 0
 
-<MainButton@Button>:
-    font_size: "24dp"
+<MainHeading@MainLabel>:
+    heading: ''
+    markup: True
+    font_size: "35dp"
+    text: "[b]" + self.heading + "[/b]"
+    color: white
+
+<MainButton>:
+    font_size: "21dp"
     color: white
     background_color: orange if self.state == "normal" else orange_down
     background_down: ''
@@ -37,7 +48,7 @@
     size_hint: None, None
     size: tuple(map(lambda x: x + 24, self.texture_size))
 
-<MainInput@TextInput>:
+<MainInput>:
     allowed_pat: r"."
     allowed_len: 99
 
@@ -54,4 +65,15 @@
 <PasswordInput@MainInput>:
     password: True
 
-<MainPopup@Popup>:
+<MainPopup>:
+#    background: ''
+    separator_color: orange
+    title_size: 21
+    size_hint: .5, .5
+
+<MainScrollView@ScrollView>:
+    do_scroll_x: False
+    do_scroll_y: True
+    bar_color: orange
+    bar_inactive_color: orange_trans
+    bar_width: 5

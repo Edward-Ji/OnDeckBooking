@@ -1,4 +1,4 @@
-from tinydb import TinyDB, Query
+from tinydb import TinyDB
 import guest
 
 data = '''Smith,Peter,1,43,M,Vegetarian food only,"13 Wallaby Way, Port Jackson. NSW."
@@ -21,6 +21,7 @@ for line in data.split('\n'):
     last, first, cabin, age, gender, notes, *_ = profile
     address = ''.join(profile[6:]).replace('"', '')
     hashed = guest.hash_psw("123456")
+    bookings = ["No Activity" for _ in range(14)]
     guests.append({"username": last[0] + first,
                    "hash": hashed,
                    "last": last,
@@ -29,9 +30,10 @@ for line in data.split('\n'):
                    "age": int(age),
                    "gender": gender,
                    "notes": notes,
-                   "address": address})
+                   "address": address,
+                   "bookings": bookings})
 
-db = TinyDB("profile.json")
+db = TinyDB("guest.json", indent=2)
 db.purge()
 for guest in guests:
     db.insert(guest)
