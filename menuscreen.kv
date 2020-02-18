@@ -96,8 +96,14 @@
             MainHeading:
                 heading: "Menu"
             HeadingButton:
+                name: "cost"
+                on_release: root.to_cost()
+            HeadingButton:
                 name: "profile"
-                on_release: root.sign_out()
+                on_release: root.to_profile()
+            HeadingButton:
+                name: "logout"
+                on_release: root.logout()
 
         AlignLabel:
             height: 65

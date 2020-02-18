@@ -1,0 +1,17 @@
+<ReceiptLayout>:
+    orientation: "vertical"
+
+<CostScreen@Screen>:
+    name: "cost"
+
+    BoxLayout:
+        orientation: "vertical"
+
+        MainBanner:
+            MainHeading:
+                heading: "Receipt"
+            HeadingButton:
+                name: "menu"
+                on_release: root.manager.current = "menu"
+
+        ReceiptLayout:

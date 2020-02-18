@@ -111,6 +111,8 @@ class Guest:
 
     @classmethod
     def costs(cls):
+        if not cls.logged_in:
+            return
         receipt = []
         total = 0
         bookings = db_guest.search(query.username == cls.logged_in)[0]["bookings"]

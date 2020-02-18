@@ -9,6 +9,7 @@ from kivy.uix.screenmanager import ScreenManager
 from mainwidgets import *
 from loginscreen import *
 from menuscreen import *
+from costscreen import *
 
 from guest import *
 
@@ -21,6 +22,7 @@ Config.set("input", "mouse", "mouse,multitouch_on_demand")
 Builder.load_file("mainwidgets.kv")
 Builder.load_file("loginscreen.kv")
 Builder.load_file("menuscreen.kv")
+Builder.load_file("costscreen.kv")
 
 
 class MainScreenManager(ScreenManager):

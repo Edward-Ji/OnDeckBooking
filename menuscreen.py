@@ -5,6 +5,7 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import CardTransition, Screen
 
 from mainwidgets import MainButton, MainPopup
+from costscreen import ReceiptLayout
 
 from guest import *
 
@@ -74,7 +75,18 @@ class ActivityPicker(MainPopup):
 
 class MenuScreen(Screen):
 
-    def sign_out(self):
+    def logout(self):
         self.manager.transition = CardTransition(direction="down", mode="push")
         self.manager.current = "login"
-        Guest.logged_in = None
+        Guest.logout()
+
+    def to_profile(self):
+        self.manager.transition = CardTransition(direction="down", mode="push")
+        # self.manager.current = "profile"
+        self.manager.transition = CardTransition(direction="up", mode="pop")
+
+    def to_cost(self):
+        ReceiptLayout.single.refresh()
+        self.manager.transition = CardTransition(direction="down", mode="push")
+        self.manager.current = "cost"
+        self.manager.transition = CardTransition(direction="up", mode="pop")
