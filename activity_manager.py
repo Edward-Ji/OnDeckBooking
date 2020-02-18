@@ -1,14 +1,17 @@
 from tinydb import TinyDB, Query
 
 activity_details = [{"name": "Glass bottom explorer",
+                     "rating": "easy",
                      "desc": "Experience a day on the reef and a short walk on one of the many remote beaches. Our "
                              "glass bottom boat experience is second to none.",
                      "price": 120},
                     {"name": "Flying to fishing",
+                     "rating": "moderate",
                      "desc": "Take our helicopter transfer and walk to a fishing spot where the fish are always biting."
                              " Lunch will be the fish caught and cooked on the spot.",
-                     "price": 290},
+                     "price": 300},
                     {"name": "SCUBA adventure",
+                     "rating": "challenging",
                      "desc": "Enjoy the whole day out in a SCUBA diving adventure. You will be transferred from the "
                              "Kimberley Quest to a purpose-built pontoon, where you will dive and lunch in style "
                              "(participants must be PADI certified for open water diving).",
@@ -22,6 +25,8 @@ for day in range(1, 15):
                                   "easy": None,
                                   "moderate": None,
                                   "challenging": None})
+    elif day == 5:
+        activity_calendar.append({"day": day})
     else:
         activity_calendar.append({"day": day,
                                   "easy": "Glass bottom explorer",

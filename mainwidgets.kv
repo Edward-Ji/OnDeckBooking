@@ -18,11 +18,19 @@
 
     size_hint: 1, None
     height: self.minimum_height
+    padding: 5
+    spacing: 10
+
+    Image:
+        size_hint_x: None
+        width: self.height
+        source: "res/icon.png"
 
 <MainLabel@Label>:
     font_size: "21dp"
     color: grey
     size_hint: None, None
+    size: self.texture_size
 
 <AlignLabel@MainLabel>:
     padding: 10, 10
@@ -32,12 +40,20 @@
     size_hint_x: 1
     left: 0
 
-<MainHeading@MainLabel>:
+<MainHeading@AlignLabel>:
     heading: ''
     markup: True
-    font_size: "35dp"
+    halign: "center"
     text: "[b]" + self.heading + "[/b]"
+    font_size: "35dp"
     color: white
+
+<HeadingButton@Button>:
+    name: ''
+    size_hint_x: None
+    width: self.height
+    background_normal: "res/" + self.name + "_btn_normal.png"
+    background_down: "res/" + self.name + "_btn_down.png"
 
 <MainButton>:
     font_size: "21dp"

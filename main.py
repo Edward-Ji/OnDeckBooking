@@ -15,6 +15,7 @@ from guest import *
 # configure window size, color and icon
 Window.clearcolor = .85, .9, .93, 1
 Window.size = 1200, 740
+Config.set("kivy", "exit_on_escape", 0)
 Config.set("input", "mouse", "mouse,multitouch_on_demand")
 
 Builder.load_file("mainwidgets.kv")
@@ -30,6 +31,7 @@ class KimberleyQuestApp(App):
 
     def build(self):
         self.title = "Kimberley Quest"
+        self.icon = "res/icon.png"
 
 
 KimberleyQuestApp().run()

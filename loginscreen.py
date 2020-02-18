@@ -4,6 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.screenmanager import CardTransition
 
 from guest import Guest
 from mainwidgets import MainPopup
@@ -21,13 +22,8 @@ class LoginField(BoxLayout):
             popup.close_btn.bind(on_release=lambda _: setattr(usr_input, "focus", True))
         else:
             root = App.get_running_app().root  # main screen manager
+            root.transition = CardTransition(direction="up", mode="pop")
             root.current = "menu"
-
-
-class AnimationLayout(RelativeLayout):
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
 
 
 class CruiseImage(Image):

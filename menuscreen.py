@@ -2,6 +2,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
+from kivy.uix.screenmanager import CardTransition, Screen
 
 from mainwidgets import MainButton, MainPopup
 
@@ -17,8 +18,7 @@ class CalendarActivityButton(MainButton):
             popup.open()
         else:
             activity_picker = ActivityPicker(day=self.day,
-                                             title="Activity booking for day "+str(self.day),
-                                             size_hint=(.95, .95))
+                                             title="Activity booking for day "+str(self.day))
             activity_picker.open()
 
 
@@ -57,6 +57,7 @@ class ActivityLayout(BoxLayout):
         super().__init__(**kwargs)
         for rating, activity in Activity.on_day(day=day).items():
             self.add_widget(ActivityBlock(name=activity.name,
+                                          rating=activity.rating,
                                           desc=activity.desc,
                                           price=activity.price,
                                           day=day))
@@ -69,3 +70,11 @@ class ActivityPicker(MainPopup):
         super().__init__(**kwargs)
         self.content.add_widget(ActivityLayout(day=day))
         self.content.spacing = 10
+
+
+class MenuScreen(Screen):
+
+    def sign_out(self):
+        self.manager.transition = CardTransition(direction="down", mode="push")
+        self.manager.current = "login"
+        Guest.logged_in = None

@@ -28,6 +28,7 @@ class Activity:
 
     def __init__(self, **kwargs):
         self.name = kwargs.pop("name")
+        self.rating = kwargs.pop("rating")
         self.desc = kwargs.pop("desc")
         self.price = kwargs.pop("price")
         if "day" in kwargs:
@@ -45,7 +46,8 @@ class Activity:
     @classmethod
     def no_activity(cls):
         return cls(name="No Activity",
-                   desc="Stay on the cruise and enjoy the natural eyesight and the wonderful facilities that we offer.",
+                   rating='easy',
+                   desc="Stay on the cruise and enjoy the wonderful seascape and facilities that we offer.",
                    price=0)
 
     @classmethod
@@ -66,7 +68,7 @@ class Activity:
 
 class Guest:
 
-    logged_in = StringProperty()
+    logged_in = ''
 
     @staticmethod
     def find(username):
@@ -106,3 +108,18 @@ class Guest:
             return transform
 
         db_guest.update(update_booking(day, activity), query.username == cls.logged_in)
+
+    @classmethod
+    def costs(cls):
+        receipt = []
+        total = 0
+        bookings = db_guest.search(query.username == cls.logged_in)[0]["bookings"]
+        day_count = 1
+        for name in bookings:
+            if name != Activity.no_activity().name:
+                activity = Activity.find(name)
+                activity.day = day_count
+                receipt.append(activity)
+                total += activity.price
+            day_count += 1
+        return receipt, total

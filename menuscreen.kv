@@ -13,7 +13,7 @@
     spacing: 5
 
     MainLabel:
-        text: "Day" + str(root.day)
+        text: "Day " + str(root.day)
         color: grey
 
     CalendarActivityButton:
@@ -25,13 +25,13 @@
         size_hint: 1, 1
 
 <CalendarLayout>:
-    rows: 2
     cols: 7
-    padding: 10
-    spacing: 5
+    padding: 15
+    spacing: 8
 
 <ActivityPickButton@MainButton+ToggleButtonBehavior>:
     group: "activity_picker"
+    allow_no_selection: False
     background_color: grey_light if self.state == "normal" else grey
     text: "Book..." if self.state == "normal" else "Booked"
     color: grey_dark
@@ -40,6 +40,7 @@
     pick_btn: _pick_btn
 
     orientation: "vertical"
+    size_hint_max_x: 275
 
     MainScrollView:
         BoxLayout:
@@ -58,6 +59,12 @@
                 text: root.name
                 color: white
             MainLabel:
+                pos_hint: {"center_x": .5}
+                height: self.texture_size[1]
+                text: "Rating: " + root.rating
+                font_size: "18dp"
+                color: grey_light
+            MainLabel:
                 text_size: root.width, None
                 size: self.texture_size
                 text: root.desc
@@ -74,10 +81,12 @@
 
 <ActivityLayout>:
     spacing: 5
+    pos_hint: {"center_x": .5}
 
-<ActivityPicker>
+<ActivityPicker>:
+    size_hint: .9, .9
 
-<MenuScreen@Screen>:
+<MenuScreen>:
     name: "menu"
 
     BoxLayout:
@@ -86,10 +95,13 @@
         MainBanner:
             MainHeading:
                 heading: "Menu"
-                center_x: root.center_x
+            HeadingButton:
+                name: "profile"
+                on_release: root.sign_out()
 
         AlignLabel:
-            text: "Welcome aboard the Kimberley Quest!"
+            height: 65
+            text: "Welcome aboard Kimberley Quest!"
             color: grey
             left: 0
 

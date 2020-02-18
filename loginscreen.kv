@@ -47,14 +47,13 @@
 <LoginScreen@Screen>:
     name: "login"
 
-    AnimationLayout:
+    RelativeLayout:
         cruise_ship: _cruise_ship
 
         CruiseImage:
             id: _cruise_ship
             source: "res/cruise_ship.png"
             size: self.texture_size
-            pos: 0, 0
 
     BoxLayout:
         orientation: "vertical"
@@ -72,4 +71,3 @@
             height: self.texture_size[1] + 12
 
         LoginField
-
