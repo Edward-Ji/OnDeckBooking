@@ -1,5 +1,49 @@
+<ReceiptBlock>:
+    size_hint_y: None
+    height: 65
+
+    AlignLabel:
+        size_hint: .6, 1
+        text: root.name
+        halign: "left"
+    AlignLabel:
+        size_hint: .2, 1
+        text: str(root.day)
+        halign: "right"
+    AlignLabel:
+        size_hint: .2, 1
+        text: "${:.2f}".format(root.price)
+        halign: "right"
+
+<TotalBlock>:
+    size_hint_y: None
+    height: 65
+
+    canvas:
+        Color:
+            rgba: grey
+        Line:
+            points: 0, self.top, self.width, self.top
+
+    AlignLabel:
+        size_hint: .5, 1
+        text: "Total"
+        halign: "left"
+    AlignLabel:
+        size_hint: .5, 1
+        text: "${:.2f}".format(root.total)
+        halign: "right"
+
 <ReceiptLayout>:
     orientation: "vertical"
+
+    MainScrollView:
+        BoxLayout:
+            id: receipt_blocks
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+
 
 <CostScreen@Screen>:
     name: "cost"
@@ -14,4 +58,28 @@
                 name: "menu"
                 on_release: root.manager.current = "menu"
 
+        BoxLayout:  # heading of the receipt table
+            size_hint_y: None
+            height: 65
+
+            canvas:
+                Color:
+                    rgba: grey
+                Line:
+                    points: 0, self.y, self.width, self.y
+
+            AlignLabel:
+                size_hint: .6, 1
+                text: "Activity"
+                halign: "left"
+            AlignLabel:
+                size_hint: .2, 1
+                text: "Day"
+                halign: "right"
+            AlignLabel:
+                size_hint: .2, 1
+                text: "Price"
+                halign: "right"
+
         ReceiptLayout:
+            id: receipt_layout

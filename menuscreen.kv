@@ -1,7 +1,9 @@
 <CalendarActivityButton>:
     day: 0
-    text: "Choose\nActivity"
-    background_color: (grey if self.state == "normal" else grey_down) if self.day <= 3 else (orange if self.state == "normal" else orange_down)
+    color_normal: grey if self.day <= 3 else orange
+    color_down: grey_down if self.day <= 3 else orange_down
+    markup: True
+    text_size: root.width - 10, None
 
 <CalendarMealButton@MainButton>:
     text: "Meal Menu"
@@ -17,6 +19,7 @@
         color: grey
 
     CalendarActivityButton:
+        id: activity_btn
         day: root.day
         size_hint: 1, 1
 
@@ -111,4 +114,5 @@
             color: grey
             left: 0
 
-        CalendarLayout
+        CalendarLayout:
+            id: calendar

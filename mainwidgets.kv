@@ -6,6 +6,7 @@
 #:set orange 1, .45, .1, 1
 #:set orange_down 1, .45, .1, .8
 #:set orange_trans 1, .45, .1, .5
+#:set transparent 0, 0, 0, 0
 
 <MainBanner@BoxLayout>:
     color: .4, .4, .4, 1
@@ -38,7 +39,6 @@
     halign: "left"
     valign: "center"
     size_hint_x: 1
-    left: 0
 
 <MainHeading@AlignLabel>:
     heading: ''
@@ -56,17 +56,19 @@
     background_down: "res/" + self.name + "_btn_down.png"
 
 <MainButton>:
-    font_size: "21dp"
-    color: white
-    background_color: orange if self.state == "normal" else orange_down
+    color_normal: orange
+    color_down: orange_down
+    background_color: self.color_normal if self.state == "normal" else self.color_down
     background_down: ''
     background_normal: ''
     size_hint: None, None
     size: tuple(map(lambda x: x + 24, self.texture_size))
+    font_size: "21dp"
+    color: white
 
 <MainInput>:
     allowed_pat: r"."
-    allowed_len: 99
+    allowed_len: 24
 
     write_tab: False
     multiline: False
@@ -85,7 +87,7 @@
 #    background: ''
     separator_color: orange
     title_size: 21
-    size_hint: .5, .5
+    size_hint: .45, .35
 
 <MainScrollView@ScrollView>:
     do_scroll_x: False
@@ -93,3 +95,8 @@
     bar_color: orange
     bar_inactive_color: orange_trans
     bar_width: 5
+
+<MainWarningLabel>:
+
+
+<MainWarning>

@@ -23,6 +23,13 @@ def hash_psw(psw):
 def verify_psw(psw, stored_hash):
     return hash_psw(psw) == stored_hash
 
+def find_img(name):
+    img_name = name.lower().replace(' ', '_')
+    for root, dirs, files in os.walk(ACTIVITY_IMG_DIR):
+        for fname in files:
+            if img_name in fname:
+                return os.path.join(root, fname)
+    return os.path.join(ACTIVITY_IMG_DIR, "activity_unknown.png")
 
 class Activity:
 
@@ -36,12 +43,7 @@ class Activity:
 
     @property
     def img(self):
-        img_name = self.name.lower().replace(' ', '_')
-        for root, dirs, files in os.walk(ACTIVITY_IMG_DIR):
-            for fname in files:
-                if img_name in fname:
-                    return os.path.join(root, fname)
-        return os.path.join(ACTIVITY_IMG_DIR, "activity_unknown.png")
+        return find_img(self.name)
 
     @classmethod
     def no_activity(cls):
