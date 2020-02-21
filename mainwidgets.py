@@ -1,9 +1,14 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
+from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 
 import re
+
+
+class MainLabel(Label):
+    pass
 
 
 class MainButton(Button):
@@ -25,7 +30,8 @@ class MainPopup(Popup):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         if not self.content:
-            self.add_widget(BoxLayout(orientation="vertical"))
+            self.add_widget(BoxLayout(orientation="vertical",
+                                      spacing=5))
         self.close_btn = None
 
     def open(self, *largs, **kwargs):

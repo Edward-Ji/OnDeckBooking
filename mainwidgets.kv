@@ -27,7 +27,7 @@
         width: self.height
         source: "res/icon.png"
 
-<MainLabel@Label>:
+<MainLabel>:
     font_size: "21dp"
     color: grey
     size_hint: None, None
@@ -43,8 +43,8 @@
 <MainHeading@AlignLabel>:
     heading: ''
     markup: True
-    halign: "center"
     text: "[b]" + self.heading + "[/b]"
+    halign: "center"
     font_size: "35dp"
     color: white
 
@@ -77,17 +77,18 @@
     background_color: grey
     selection_color: orange_trans
     cursor_color: orange
+    disabled_foreground_color: grey_light
     size_hint_y: None
     height: 42
 
 <PasswordInput@MainInput>:
+    allowed_pat: r"\S"
     password: True
 
 <MainPopup>:
-#    background: ''
     separator_color: orange
     title_size: 21
-    size_hint: .45, .35
+    size_hint: .5, .45
 
 <MainScrollView@ScrollView>:
     do_scroll_x: False

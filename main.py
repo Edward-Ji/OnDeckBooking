@@ -10,6 +10,7 @@ from mainwidgets import *
 from loginscreen import *
 from menuscreen import *
 from costscreen import *
+from profilescreen import *
 
 from guest import *
 
@@ -23,6 +24,7 @@ Builder.load_file("mainwidgets.kv")
 Builder.load_file("loginscreen.kv")
 Builder.load_file("menuscreen.kv")
 Builder.load_file("costscreen.kv")
+Builder.load_file("profilescreen.kv")
 
 
 class MainScreenManager(ScreenManager):

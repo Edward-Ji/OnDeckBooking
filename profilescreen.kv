@@ -1,0 +1,166 @@
+<PasswordInputLayout@BoxLayout>:
+    name: ''
+    text: psw_input.text
+    size_hint_y: None
+    height: self.minimum_height
+
+    MainLabel:
+        size_hint_x: None
+        width: 300
+        text: root.name
+        color: grey_light
+    PasswordInput:
+        id: psw_input
+
+<ProfileInput>:
+    name: ''
+    allowed_pat: r'.'
+    allowed_len: 120 if self.multiline else 24
+    multiline: False
+    readonly: False
+
+    size_hint: .9, None
+    height: self.minimum_height
+    pos_hint: {"center_x": .5}
+
+    AlignLabel:
+        size_hint: None, 1
+        width: 120
+        text: root.name
+    MainInput:
+        id: input
+        allowed_pat: root.allowed_pat
+        allowed_len: root.allowed_len
+        size_hint: 1, None
+        height: 84 if root.multiline else 42
+        multiline: root.multiline
+        disabled: root.readonly
+
+<ProfilePassword>:
+    size_hint: .9, None
+    height: self.minimum_height
+    pos_hint: {"center_x": .5}
+
+    AlignLabel:
+        size_hint: None, 1
+        width: 120
+        text: "Password"
+
+    MainButton:
+        size_hint: 1, None
+        text: "Change"
+        background_color: grey if self.state == "normal" else grey_down
+        color: white
+        on_release: root.change_psw()
+
+<ProfileField@BoxLayout>:
+    orientation: "vertical"
+    padding: 24
+    spacing: 10
+    size_hint_y: None
+    height: self.minimum_height
+
+    ProfileInput:
+        name: "Username"
+        readonly: True
+
+    BoxLayout:
+        size_hint: .9, None
+        height: self.minimum_height
+        pos_hint: {"center_x": .5}
+        ProfileInput:
+            name: "First"
+            readonly: True
+        ProfileInput:
+            name: "Last"
+            readonly: True
+        ProfilePassword
+
+    BoxLayout:
+        size_hint: .9, None
+        height: self.minimum_height
+        pos_hint: {"center_x": .5}
+        ProfileInput:
+            name: "Age"
+            readonly: True
+        ProfileInput:
+            name: "Gender"
+            readonly: True
+        ProfileInput:
+            name: "Cabin"
+            readonly: True
+
+    ProfileInput:
+        name: "Notes"
+        multiline: True
+
+    ProfileInput:
+        name: "Address"
+        multiline: True
+
+<UpdateButton@MainButton>:
+    size_hint_x: 1
+    pos_hint: {"center_x": .5}
+    text: "Save & Close"
+
+<PasswordChangeLayout>:
+
+    anchor_x: "center"
+    anchor_y: "center"
+
+    BoxLayout:
+        orientation: "vertical"
+        size_hint: .9, None
+        height: self.minimum_height
+        spacing: 5
+
+        MainLabel:
+            size_hint_x: None
+            width: 300
+            text: "Original password"
+            color: grey_light
+
+        PasswordInput:
+            id: ori_psw_input
+
+        MainLabel:
+            size_hint_x: None
+            width: 300
+            text: "New password"
+            color: grey_light
+
+        PasswordInput:
+            id: new_psw_input
+
+        MainButton:
+            pos_hint: {"center_x": .5}
+            text: "Confirm"
+            on_release: root.confirm()
+
+<ProfileScreen>:
+    name: "profile"
+
+    BoxLayout:
+        orientation: "vertical"
+
+        MainBanner:
+            MainHeading:
+                heading: "Profile"
+            HeadingButton:
+                name: "menu"
+                on_release: root.to_menu()
+
+        MainScrollView:
+            ProfileField:
+                id: field
+
+        MainLabel:
+            padding: 10, 10
+            text_size: root.width, None
+            size: self.texture_size
+            text:
+                "If you believe that any of the information in the read-only sections is incorrect, "\
+                "feel free to contact any crew member."
+
+        UpdateButton:
+            on_release: root.update_profile()

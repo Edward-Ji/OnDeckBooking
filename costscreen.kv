@@ -15,25 +15,6 @@
         text: "${:.2f}".format(root.price)
         halign: "right"
 
-<TotalBlock>:
-    size_hint_y: None
-    height: 65
-
-    canvas:
-        Color:
-            rgba: grey
-        Line:
-            points: 0, self.top, self.width, self.top
-
-    AlignLabel:
-        size_hint: .5, 1
-        text: "Total"
-        halign: "left"
-    AlignLabel:
-        size_hint: .5, 1
-        text: "${:.2f}".format(root.total)
-        halign: "right"
-
 <ReceiptLayout>:
     orientation: "vertical"
 
@@ -41,11 +22,33 @@
         BoxLayout:
             id: receipt_blocks
             orientation: "vertical"
+            padding: 10
             size_hint_y: None
             height: self.minimum_height
 
+    BoxLayout:
+        size_hint_y: None
+        height: 65
+        padding: 10
 
-<CostScreen@Screen>:
+        canvas:
+            Color:
+                rgba: grey
+            Line:
+                points: 0, self.top, self.width, self.top
+
+        AlignLabel:
+            size_hint: .5, 1
+            text: "Total"
+            bold: True
+            halign: "left"
+        AlignLabel:
+            size_hint: .5, 1
+            text: "${:.2f}".format(root.total)
+            bold: True
+            halign: "right"
+
+<CostScreen>:
     name: "cost"
 
     BoxLayout:
@@ -61,6 +64,7 @@
         BoxLayout:  # heading of the receipt table
             size_hint_y: None
             height: 65
+            padding: 10
 
             canvas:
                 Color:

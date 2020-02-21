@@ -31,6 +31,7 @@ def find_img(name):
                 return os.path.join(root, fname)
     return os.path.join(ACTIVITY_IMG_DIR, "activity_unknown.png")
 
+
 class Activity:
 
     def __init__(self, **kwargs):
@@ -91,13 +92,37 @@ class Guest:
                 return "Incorrect password!"
 
     @classmethod
+    def change_psw(cls, ori_psw, new_psw):
+        ori_hash = cls.get_profile("hash")
+        if hash_psw(ori_psw) != ori_hash:
+            return "Incorrect original password!"
+        elif ori_psw == new_psw:
+            return "Your new password is the same as the original one!"
+        elif len(new_psw) < 6:
+            return "You new password is too short!"
+        else:
+            cls.set_profile("hash", hash_psw(new_psw))
+
+
+    @classmethod
     def logout(cls):
         cls.logged_in = None
 
     @classmethod
-    def get_booked(cls, day):
+    def get_profile(cls, criteria):
         profile = db_guest.search(query.username == cls.logged_in)[0]
-        return profile["bookings"][day-1]
+        return profile[criteria]
+
+    @classmethod
+    def set_profile(cls, criteria, value):
+        db_guest.update({criteria: value}, query.username == cls.logged_in)
+        if criteria == "username":
+            cls.logged_in = value
+
+    @classmethod
+    def get_booked(cls, day):
+        bookings = cls.get_profile("bookings")
+        return bookings[day-1]
 
     @classmethod
     def book_activity(cls, day, activity):

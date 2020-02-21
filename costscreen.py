@@ -1,6 +1,9 @@
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
+from kivy.properties import NumericProperty
+
+from mainwidgets import MainLabel
 
 from guest import *
 
@@ -24,19 +27,24 @@ class TotalBlock(BoxLayout):
 class ReceiptLayout(BoxLayout):
 
     single = None
+    total = NumericProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         ReceiptLayout.single = self
 
     def refresh(self):
-        self.ids.receipt_blocks.clear_widgets()
+        layout = self.ids.receipt_blocks
+        layout.clear_widgets()
         receipt, total = Guest.costs()
-        for activity in receipt:
-            self.ids.receipt_blocks.add_widget(ReceiptBlock(name=activity.name,
-                                                            day=activity.day,
-                                                            price=activity.price))
-        self.add_widget(TotalBlock(total=total))
+        if receipt:
+            for activity in receipt:
+                layout.add_widget(ReceiptBlock(name=activity.name,
+                                               day=activity.day,
+                                               price=activity.price))
+        else:
+            layout.add_widget(MainLabel(text="You haven't booked any activity."))
+        self.total = total
 
 
 class CostScreen(Screen):

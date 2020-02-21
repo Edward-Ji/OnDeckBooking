@@ -101,7 +101,7 @@ class MenuScreen(Screen):
 
     def to_profile(self):
         self.manager.transition = CardTransition(direction="down", mode="push")
-        # self.manager.current = "profile"
+        self.manager.current = "profile"
         self.manager.transition = CardTransition(direction="up", mode="pop")
 
     def to_cost(self):

@@ -3,7 +3,6 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
-from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.screenmanager import CardTransition
 
 from guest import Guest
@@ -12,8 +11,9 @@ from mainwidgets import MainPopup
 
 class LoginField(BoxLayout):
 
-    @classmethod
-    def login(cls, usr_input, psw_input):
+    def login(self):
+        usr_input = self.ids.usr_input
+        psw_input = self.ids.psw_input
         msg = Guest.login(usr_input.text, psw_input.text)
         if msg:  # login failed
             popup = MainPopup(title="Login failed!")

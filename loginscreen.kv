@@ -15,7 +15,7 @@
             text: "Username"
             color: orange
         MainInput:
-            id: _usr_input
+            id: usr_input
             allowed_pat: r'\w|-'
             allowed_len: 20
             focus: True
@@ -34,7 +34,7 @@
             text: "Password"
             color: orange
         PasswordInput:
-            id: _psw_input
+            id: psw_input
             hint_text: "123456 by default"
 
             text: "123456"
@@ -42,7 +42,7 @@
     MainButton:
         text: "Login"
         pos_hint: {"center_x": .5}
-        on_release: root.login(_usr_input, _psw_input)
+        on_release: root.login()
 
 <LoginScreen@Screen>:
     name: "login"
