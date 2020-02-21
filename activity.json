@@ -18,6 +18,36 @@
       "rating": "challenging",
       "desc": "Enjoy the whole day out in a SCUBA diving adventure. You will be transferred from the Kimberley Quest to a purpose-built pontoon, where you will dive and lunch in style (participants must be PADI certified for open water diving).",
       "price": 160
+    },
+    "4": {
+      "name": "Feeding crocodile",
+      "rating": "challenging",
+      "desc": "You will visit the native crocodiles on the Karona island that bites by a fast boat. You may feed them with special equipments if you wish. ",
+      "price": 120
+    },
+    "5": {
+      "name": "Individual fishing",
+      "rating": "moderate",
+      "desc": "You will ride a boat and go fishing on your own or you could go in small groups. Out in the middle of the Mozo River, you will be fishing or your own. According to local laws, you can keep the spoil. ",
+      "price": 246
+    },
+    "6": {
+      "name": "Swim in Mozo",
+      "rating": "challenging",
+      "desc": "Enjoy a swim in the calm Mozo river. A safeguard will follow you, but please still make sure you can swim on your own. ",
+      "price": 80
+    },
+    "7": {
+      "name": "Visiting aircraft remains",
+      "rating": "easy",
+      "desc": "In this activity, you will visit the remains of a aircraft that went down in the 1980s. Out on the island, you will have a wonderful view of local wild life. We will also have a picnic on the island.",
+      "price": 135
+    },
+    "8": {
+      "name": "Waterfall bath",
+      "rating": "moderate",
+      "desc": "You will mostly stay on the rocky embankment under a beautiful waterfall. However, the water could potentially flush you down the stream, so make sure you can swim with ease. We will also provide life buoy. ",
+      "price": 85
     }
   },
   "calendar": {
@@ -41,65 +71,68 @@
     },
     "4": {
       "day": 4,
-      "easy": "Glass bottom explorer",
+      "easy": "Visiting aircraft remains",
       "moderate": "Flying to fishing",
-      "challenging": "SCUBA adventure"
+      "challenging": "Feeding crocodile"
     },
     "5": {
-      "day": 5
+      "day": 5,
+      "easy": "Glass bottom explorer",
+      "moderate": "Individual fishing",
+      "challenging": "Feeding crocodile"
     },
     "6": {
       "day": 6,
-      "easy": "Glass bottom explorer",
-      "moderate": "Flying to fishing",
+      "easy": "Visiting aircraft remains",
+      "moderate": "Waterfall bath",
       "challenging": "SCUBA adventure"
     },
     "7": {
       "day": 7,
-      "easy": "Glass bottom explorer",
+      "easy": "Visiting aircraft remains",
       "moderate": "Flying to fishing",
-      "challenging": "SCUBA adventure"
+      "challenging": "Feeding crocodile"
     },
     "8": {
       "day": 8,
       "easy": "Glass bottom explorer",
-      "moderate": "Flying to fishing",
-      "challenging": "SCUBA adventure"
+      "moderate": "Waterfall bath",
+      "challenging": "Swim in Mozo"
     },
     "9": {
       "day": 9,
-      "easy": "Glass bottom explorer",
-      "moderate": "Flying to fishing",
-      "challenging": "SCUBA adventure"
+      "easy": "Visiting aircraft remains",
+      "moderate": "Waterfall bath",
+      "challenging": "Feeding crocodile"
     },
     "10": {
       "day": 10,
-      "easy": "Glass bottom explorer",
+      "easy": "Visiting aircraft remains",
       "moderate": "Flying to fishing",
-      "challenging": "SCUBA adventure"
+      "challenging": "Swim in Mozo"
     },
     "11": {
       "day": 11,
-      "easy": "Glass bottom explorer",
+      "easy": "Visiting aircraft remains",
       "moderate": "Flying to fishing",
-      "challenging": "SCUBA adventure"
+      "challenging": "Swim in Mozo"
     },
     "12": {
       "day": 12,
       "easy": "Glass bottom explorer",
       "moderate": "Flying to fishing",
-      "challenging": "SCUBA adventure"
+      "challenging": "Swim in Mozo"
     },
     "13": {
       "day": 13,
       "easy": "Glass bottom explorer",
-      "moderate": "Flying to fishing",
-      "challenging": "SCUBA adventure"
+      "moderate": "Waterfall bath",
+      "challenging": "Feeding crocodile"
     },
     "14": {
       "day": 14,
       "easy": "Glass bottom explorer",
-      "moderate": "Flying to fishing",
+      "moderate": "Waterfall bath",
       "challenging": "SCUBA adventure"
     }
   }

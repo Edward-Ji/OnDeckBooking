@@ -19,7 +19,7 @@ class CalendarActivityButton(MainButton):
             if activity == Activity.no_activity().name:
                 self.text = "No activity booked"
             else:
-                self.text = "Booked:\n" + activity
+                self.text = activity
             self.text += "\n[i][size=16]Tap to book activity[/size][/i]"
 
     def on_release(self):
@@ -29,7 +29,7 @@ class CalendarActivityButton(MainButton):
             popup.open()
         else:
             activity_picker = ActivityPicker(day=self.day,
-                                             title="Activity booking for day "+str(self.day))
+                                             title="Day "+str(self.day))
             activity_picker.refresh_ref = self
             activity_picker.open()
 
