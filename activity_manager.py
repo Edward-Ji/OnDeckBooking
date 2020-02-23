@@ -61,7 +61,7 @@ for day in range(1, 15):
                                   "challenging": choice(["SCUBA adventure", "Feeding crocodile", "Swim in Mozo"])})
 
 db = TinyDB("activity.json", indent=2)
-db.purge()
+db.purge_tables()
 tb_detail = db.table("details")
 for each in activity_details:
     tb_detail.insert(each)

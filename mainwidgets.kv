@@ -3,8 +3,9 @@
 #:set grey .4, .4, .4, 1
 #:set grey_down .4, .4, .4, .8
 #:set grey_dark .1, .1, .1, 1
+#:set grey_trans 0, 0, 0, .7
 #:set orange 1, .45, .1, 1
-#:set orange_down 1, .45, .1, .8
+#:set orange_down 1, .45, .1, .9
 #:set orange_trans 1, .45, .1, .5
 #:set transparent 0, 0, 0, 0
 
@@ -19,7 +20,7 @@
 
     size_hint: 1, None
     height: self.minimum_height
-    padding: 5
+    padding: 15
     spacing: 10
 
     Image:
@@ -48,7 +49,7 @@
     font_size: "35dp"
     color: white
 
-<HeadingButton@Button>:
+<HeadingButton>:
     name: ''
     size_hint_x: None
     width: self.height
@@ -89,6 +90,27 @@
     separator_color: orange
     title_size: 21
     size_hint: .5, .45
+
+<MessagePopup>:
+    opacity: 1
+    size_hint: None, None
+    size: 0, 0
+    pos_hint: {"center_x": .5, "center_y": .15}
+    border: 0, 0, 0, 0
+    background_color: 0, 0, 0, 0
+    title_size: "0dp"
+    separator_height: "0dp"
+    MainLabel:
+        id: label
+        canvas.before:
+            Color:
+                rgba: grey_trans
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        center_x: root.center_x
+        text: root.message
+        color: white
 
 <MainScrollView@ScrollView>:
     do_scroll_x: False

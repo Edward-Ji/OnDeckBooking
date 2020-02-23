@@ -6,7 +6,7 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import CardTransition
 
 from guest import Guest
-from mainwidgets import MainPopup
+from mainwidgets import MessagePopup
 
 
 class LoginField(BoxLayout):
@@ -15,11 +15,8 @@ class LoginField(BoxLayout):
         usr_input = self.ids.usr_input
         psw_input = self.ids.psw_input
         msg = Guest.login(usr_input.text, psw_input.text)
-        if msg:  # login failed
-            popup = MainPopup(title="Login failed!")
-            popup.content.add_widget(Label(text=msg))
-            popup.open()
-            popup.close_btn.bind(on_release=lambda _: setattr(usr_input, "focus", True))
+        if msg:
+            MessagePopup(message=msg).open()
         else:
             root = App.get_running_app().root  # main screen manager
             root.transition = CardTransition(direction="up", mode="pop")

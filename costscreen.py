@@ -3,7 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivy.properties import NumericProperty
 
-from mainwidgets import MainLabel
+from mainwidgets import MessagePopup
 
 from guest import *
 
@@ -43,7 +43,7 @@ class ReceiptLayout(BoxLayout):
                                                day=activity.day,
                                                price=activity.price))
         else:
-            layout.add_widget(MainLabel(text="You haven't booked any activity."))
+            MessagePopup(message="You haven't booked any activity yet.").open()
         self.total = total
 
 

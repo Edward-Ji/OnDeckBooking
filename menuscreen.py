@@ -1,10 +1,8 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.label import Label
 from kivy.uix.screenmanager import CardTransition, Screen
 
-from mainwidgets import MainButton, MainPopup
-from costscreen import ReceiptLayout
+from mainwidgets import MainButton, MainPopup, MessagePopup
 
 from guest import *
 
@@ -24,12 +22,10 @@ class CalendarActivityButton(MainButton):
 
     def on_release(self):
         if self.day <= 3:
-            popup = MainPopup(title="Sorry")
-            popup.content.add_widget(Label(text="There are no activities available for the first three days."))
-            popup.open()
+            MessagePopup(message="There are no activities available for the first three days.").open()
         else:
             activity_picker = ActivityPicker(day=self.day,
-                                             title="Day "+str(self.day))
+                                             title="Activities available for day "+str(self.day))
             activity_picker.refresh_ref = self
             activity_picker.open()
 
@@ -59,6 +55,8 @@ class ActivityBlock(BoxLayout, Activity):
             self.pick_btn.state = "down"
 
     def update(self, state):
+        if self.rating == "challenging" and state == "down":
+            MessagePopup(message="Please be aware this activity could be dangerous!").open()
         if state == "down":
             Guest.book_activity(self.day, self.name)
 
