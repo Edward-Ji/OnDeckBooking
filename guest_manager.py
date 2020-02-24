@@ -23,7 +23,7 @@ for line in data.split('\n'):
     hashed = guest.hash_psw("123456")
     bookings = ["No Activity" for _ in range(14)]
     meals = ["Normal" for _ in range(14)]
-    guests.append({"username": last[0] + first,
+    guests.append({"username": first[0] + last + str(cabin),
                    "hash": hashed,
                    "last": last,
                    "first": first,

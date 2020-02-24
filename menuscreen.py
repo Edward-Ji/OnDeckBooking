@@ -2,7 +2,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import CardTransition, Screen
 
-from mainwidgets import MainButton, MainPopup, MessagePopup
+from mainwidgets import MainButton, MainPopup, SelectionPopup, MessagePopup
 
 from guest import *
 
@@ -18,7 +18,7 @@ class CalendarActivityButton(MainButton):
                 self.text = "No activity booked"
             else:
                 self.text = activity
-            self.text += "\n[i][size=16]Tap to book activity[/size][/i]"
+            self.text += "\n[i][size=16]Tap to book[/size][/i]"
 
     def on_release(self):
         if self.day <= 3:
@@ -52,13 +52,26 @@ class ActivityBlock(BoxLayout, Activity):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         if Guest.get_booked(self.day) == self.name:
-            self.pick_btn.state = "down"
+            self.ids.pick_btn.state = "down"
 
-    def update(self, state):
-        if self.rating == "challenging" and state == "down":
-            MessagePopup(message="Please be aware this activity could be dangerous!").open()
-        if state == "down":
-            Guest.book_activity(self.day, self.name)
+    def _update(self, *args):
+        Guest.book_activity(self.day, self.name)
+        MessagePopup(message="Bookings saved!").open()
+
+    def update(self):
+        if self.ids.pick_btn.state == "down":
+            if self.rating == "challenging":
+                popup = SelectionPopup(title="Warning",
+                                       message="Be aware that this activity is challenging.\n"
+                                               "Please confirm that you have no disability or disease "
+                                               "that could potentially cause harm to your body.")
+                popup.add_choice(text="Book anyway",
+                                 on_release=self._update)
+                popup.add_choice(text="Cancel",
+                                 on_release=lambda _: setattr(self.ids.pick_btn, "state", "normal"))
+                popup.open()
+            else:
+                self._update()
 
 
 class ActivityLayout(BoxLayout):
@@ -92,10 +105,19 @@ class MenuScreen(Screen):
     def on_pre_enter(self, *args):
         self.ids.calendar.refresh()
 
-    def logout(self):
+    def _logout(self, *args):
         self.manager.transition = CardTransition(direction="down", mode="push")
         self.manager.current = "login"
         Guest.logout()
+
+    def logout(self):
+        popup = SelectionPopup(title="Warning",
+                               message="After logout you have to type in your credentials again.\n"
+                                       "Do you really want to logout?")
+        popup.add_choice(text="Logout",
+                         on_release=self._logout)
+        popup.add_choice(text="Cancel")
+        popup.open()
 
     def to_profile(self):
         self.manager.transition = CardTransition(direction="down", mode="push")

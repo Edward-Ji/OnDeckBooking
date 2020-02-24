@@ -23,6 +23,7 @@ def hash_psw(psw):
 def verify_psw(psw, stored_hash):
     return hash_psw(psw) == stored_hash
 
+
 def find_img(name):
     img_name = name.lower().replace(' ', '_')
     for root, dirs, files in os.walk(ACTIVITY_IMG_DIR):
@@ -94,7 +95,7 @@ class Guest:
     @classmethod
     def change_psw(cls, ori_psw, new_psw):
         ori_hash = cls.get_profile("hash")
-        if hash_psw(ori_psw) != ori_hash:
+        if verify_psw(ori_psw, ori_hash):
             return "Incorrect original password!"
         elif ori_psw == new_psw:
             return "Your new password is the same as the original one!"

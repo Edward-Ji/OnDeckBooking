@@ -3,7 +3,6 @@ from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics import Color, Rectangle
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.modalview import ModalView
@@ -11,7 +10,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
-from kivy.properties import BooleanProperty
+from kivy.properties import BooleanProperty, StringProperty
 
 import re
 
@@ -29,13 +28,13 @@ class HoverBehavior(Widget):
     @property
     def inside_modal_view(self):
         parent = self.parent
-        while not isinstance(parent, Screen):
+        while parent and not isinstance(parent, Screen):
             if isinstance(parent, ModalView):
                 return True
             parent = parent.parent
 
     def on_mouse_pos(self, *args):
-        if isinstance(App.get_running_app().root_window.children[0], ModalView)\
+        if isinstance(App.get_running_app().root_window.children[0], Popup)\
                 and not self.inside_modal_view:
             return
         pos = args[1]
@@ -82,7 +81,7 @@ class HeadingButton(Button, HoverBehavior):
         self.hint = None
 
     def on_hover_enter(self):
-        self.hint = Label(text=self.name,
+        self.hint = Label(text=self.name.title(),
                           center=(self.center_x, self.y - 5))
         self.add_widget(self.hint)
 
@@ -101,21 +100,25 @@ class MainInput(TextInput):
 
 
 class MainPopup(Popup):
+    pass
+
+
+class SelectionPopup(Popup):
+
+    message = StringProperty()
 
     def __init__(self, **kwargs):
+        if "message" in kwargs:
+            self.message = kwargs.pop("message")
         super().__init__(**kwargs)
-        if not self.content:
-            self.add_widget(BoxLayout(orientation="vertical",
-                                      spacing=5))
-        self.close_btn = None
 
-    def open(self, *largs, **kwargs):
-        self.close_btn = MainButton(text="Close",
-                                    font_size="18dp",
-                                    pos_hint={"center_x": .5})
-        self.close_btn.bind(on_release=self.dismiss)
-        self.content.add_widget(self.close_btn)
-        super().open(*largs, **kwargs)
+    def add_choice(self, text, release_dismiss=True, **kwargs):
+        choice_btn = MainButton(text=text)
+        self.ids.choice_box.add_widget(choice_btn)
+        choice_btn.bind(**kwargs)
+        if release_dismiss:
+            choice_btn.bind(on_release=self.dismiss)
+        return choice_btn
 
 
 class MessagePopup(ModalView):
@@ -143,12 +146,12 @@ class MessagePopup(ModalView):
 
     def open(self, *largs, **kwargs):
         super().open(*largs, **kwargs)
-        self.dismiss_schedule = Clock.schedule_once(self.close, 1.5)
+        self.dismiss_schedule = Clock.schedule_once(self.close, 1.6)
 
     def close(self, *largs):
-        self.fade = Animation(opacity=0, t="in_sine", duration=0.8)
+        self.fade = Animation(opacity=0, t="in_sine", duration=0.6)
         self.fade.start(self)
-        self.close_schedule = Clock.schedule_once(self.dismiss, 0.8)
+        self.close_schedule = Clock.schedule_once(self.dismiss, 0.6)
 
     def dismiss(self, *largs, **kwargs):
         MessagePopup.current = None

@@ -86,10 +86,55 @@
     allowed_pat: r"\S"
     password: True
 
-<MainPopup>:
+<PopupCloseButton@Button>:
+    size_hint: None, None
+    size: 30, 30
+    background_normal: "res/close_btn_normal.png"
+    background_down: "res/close_btn_down.png"
+
+<Popup>:
     separator_color: orange
     title_size: 21
     size_hint: .5, .45
+    auto_dismiss: True
+
+<MainPopup>:
+
+    BoxLayout:
+        orientation: "vertical"
+
+        RelativeLayout:
+            size_hint: 0, 0
+            PopupCloseButton:
+                center: root.width - 35, 35
+                on_release: root.dismiss()
+
+<SelectionPopup>:
+
+    BoxLayout:
+        orientation: "vertical"
+
+        RelativeLayout:
+            size_hint: 0, 0
+            PopupCloseButton:
+                center: root.width - 35, 35
+                on_release: root.dismiss()
+
+        MainLabel:
+            padding: 10, 10
+            text_size: root.width, None
+            size: self.texture_size
+            size_hint: 1, 1
+            text: root.message
+            color: grey_light
+
+        BoxLayout:
+            id: choice_box
+            padding: 15
+            spacing: 24
+            size_hint: None, None
+            size: self.minimum_size
+            pos_hint: {"center_x": .5}
 
 <MessagePopup>:
     opacity: 1
@@ -100,6 +145,8 @@
     background_color: 0, 0, 0, 0
     title_size: "0dp"
     separator_height: "0dp"
+    auto_dismiss:False
+
     MainLabel:
         id: label
         canvas.before:
@@ -118,8 +165,3 @@
     bar_color: orange
     bar_inactive_color: orange_trans
     bar_width: 5
-
-<MainWarningLabel>:
-
-
-<MainWarning>

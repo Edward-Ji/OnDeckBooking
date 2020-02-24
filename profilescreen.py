@@ -2,7 +2,7 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 
-from mainwidgets import MainLabel, MainButton, MainPopup, MessagePopup
+from mainwidgets import MainPopup, SelectionPopup, MessagePopup
 
 from guest import *
 
@@ -36,6 +36,14 @@ class ProfilePassword(BoxLayout):
 
 class PasswordChangeLayout(AnchorLayout):
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.ids.ori_psw_input.focus = True
+        self.ids.ori_psw_input.text = '1'  # temporary solution to cursor disappearance bug
+        self.ids.ori_psw_input.text = ''
+        self.ids.new_psw_input.text = '1'
+        self.ids.new_psw_input.text = ''
+
     def confirm(self):
         ori_psw_input = self.ids.ori_psw_input
         ori_psw = ori_psw_input.text
@@ -43,6 +51,7 @@ class PasswordChangeLayout(AnchorLayout):
         msg = Guest.change_psw(ori_psw, new_psw)
         if msg:
             MessagePopup(message=msg).open()
+            ori_psw_input.focus = True
         else:
             MessagePopup(message="Password changed successfully!").open()
             self.popup.dismiss()
@@ -75,15 +84,15 @@ class ProfileScreen(Screen):
 
     def to_menu(self):
         if self.changed:
-            popup = MainPopup(title="Warning")
-            popup.content.add_widget(MainLabel(text="You have unsaved changes.\n"
-                                                    "Do you really want to quit without saving?"))
-            menu_btn = MainButton(text="Quit",
-                                  pos_hint={"center_x": .5})
-            menu_btn.bind(on_release=lambda _: setattr(self.manager, "current", "menu"))
-            menu_btn.bind(on_release=popup.dismiss)
-            popup.content.add_widget(menu_btn)
+            popup = SelectionPopup(title="Warning",
+                                   message="You have unsaved changes.\n"
+                                           "Do you want to go back to main menu without saving?")
+            popup.add_choice("Don't save",
+                             on_release=lambda _: setattr(self.manager, "current", "menu"))
+            popup.add_choice("Save",
+                             on_release=lambda _: setattr(self.manager, "current", "menu"))\
+                .bind(on_release=lambda _: self.update_profile())
+            popup.add_choice(text="Cancel")
             popup.open()
-            popup.close_btn.text = "Cancel"
         else:
             self.manager.current = "menu"

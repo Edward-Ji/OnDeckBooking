@@ -40,8 +40,6 @@
     color: grey_dark
 
 <ActivityBlock>:
-    pick_btn: _pick_btn
-
     orientation: "vertical"
     size_hint_max_x: 275
 
@@ -77,10 +75,11 @@
                 pos_hint: {"center_x": .5}
                 text: "Price: ${:.2f}".format(root.price)
                 color: grey_light
+
     ActivityPickButton:
-        id: _pick_btn
+        id: pick_btn
         pos_hint: {"center_x": .5}
-        on_state: root.update(self.state)
+        on_state: root.update()
 
 <ActivityLayout>:
     spacing: 5
