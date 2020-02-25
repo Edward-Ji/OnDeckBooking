@@ -32,7 +32,7 @@
     padding: 15
     spacing: 8
 
-<ActivityPickButton@MainButton+ToggleButtonBehavior>:
+<ActivityPickButton>:
     group: "activity_picker"
     allow_no_selection: False
     background_color: grey_light if self.state == "normal" else grey
@@ -78,7 +78,9 @@
 
     ActivityPickButton:
         id: pick_btn
+        name: root.name
         pos_hint: {"center_x": .5}
+        state: "down"
         on_state: root.update()
 
 <ActivityLayout>:

@@ -9,6 +9,8 @@
 #:set orange_trans 1, .45, .1, .5
 #:set transparent 0, 0, 0, 0
 
+#:import Clock kivy.clock.Clock
+
 <MainBanner@BoxLayout>:
     color: .4, .4, .4, 1
     canvas.before:
@@ -110,15 +112,10 @@
                 on_release: root.dismiss()
 
 <SelectionPopup>:
+    auto_dismiss: False
 
     BoxLayout:
         orientation: "vertical"
-
-        RelativeLayout:
-            size_hint: 0, 0
-            PopupCloseButton:
-                center: root.width - 35, 35
-                on_release: root.dismiss()
 
         MainLabel:
             padding: 10, 10

@@ -18,6 +18,8 @@ class LoginField(BoxLayout):
         if msg:
             MessagePopup(message=msg).open()
         else:
+            usr_input.text = ''
+            psw_input.text = ''
             root = App.get_running_app().root  # main screen manager
             root.transition = CardTransition(direction="up", mode="pop")
             root.current = "menu"

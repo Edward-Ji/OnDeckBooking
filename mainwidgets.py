@@ -9,6 +9,7 @@ from kivy.uix.modalview import ModalView
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import Screen
+from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.widget import Widget
 from kivy.properties import BooleanProperty, StringProperty
 
@@ -82,7 +83,7 @@ class HeadingButton(Button, HoverBehavior):
 
     def on_hover_enter(self):
         self.hint = Label(text=self.name.title(),
-                          center=(self.center_x, self.y - 5))
+                          center=(self.center_x, self.y - 6))
         self.add_widget(self.hint)
 
     def on_hover_leave(self):

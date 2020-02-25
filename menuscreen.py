@@ -1,6 +1,7 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import CardTransition, Screen
+from kivy.uix.togglebutton import ToggleButtonBehavior
 
 from mainwidgets import MainButton, MainPopup, SelectionPopup, MessagePopup
 
@@ -47,12 +48,23 @@ class CalendarLayout(GridLayout):
             self.add_widget(CalendarBlock(day=day))
 
 
+class ActivityPickButton(MainButton, ToggleButtonBehavior):
+
+    def no_activity_down(self):
+        all_btn = ToggleButtonBehavior.get_widgets(self.group)
+        for btn in all_btn:
+            if btn.name == Activity.no_activity().name:
+                btn.state = "down"
+        self.state = "normal"
+        del all_btn  # necessary for garbage collecting
+
+
 class ActivityBlock(BoxLayout, Activity):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        if Guest.get_booked(self.day) == self.name:
-            self.ids.pick_btn.state = "down"
+        if Guest.get_booked(self.day) != self.name:
+            self.ids.pick_btn.state = "normal"
 
     def _update(self, *args):
         Guest.book_activity(self.day, self.name)
@@ -68,7 +80,7 @@ class ActivityBlock(BoxLayout, Activity):
                 popup.add_choice(text="Book anyway",
                                  on_release=self._update)
                 popup.add_choice(text="Cancel",
-                                 on_release=lambda _: setattr(self.ids.pick_btn, "state", "normal"))
+                                 on_release=lambda _: self.ids.pick_btn.no_activity_down())
                 popup.open()
             else:
                 self._update()

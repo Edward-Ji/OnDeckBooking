@@ -21,8 +21,6 @@
             focus: True
             hint_text: "contact the crew if you don't know"
 
-            text: "PSmith1"
-
     BoxLayout:
         size_hint: .6, None
         height: 45
@@ -36,8 +34,12 @@
         PasswordInput:
             id: psw_input
             hint_text: "123456 by default"
-
-            text: "123456"
+        ToggleButton:
+            size_hint: None, None
+            size: 35, 35
+            background_normal: "res/password_eye_normal.png"
+            background_down: "res/password_eye_down.png"
+            on_state: psw_input.password = self.state == "normal"
 
     MainButton:
         text: "Login"
