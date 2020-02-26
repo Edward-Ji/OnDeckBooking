@@ -19,7 +19,9 @@
             allowed_pat: r'\w|-'
             allowed_len: 20
             focus: True
-            hint_text: "contact the crew if you don't know"
+            hint_text: "Composed of the first letter of your first name, your last name and your cabin number"
+
+            text: "PSmith1"
 
     BoxLayout:
         size_hint: .6, None
@@ -33,7 +35,10 @@
             color: orange
         PasswordInput:
             id: psw_input
-            hint_text: "123456 by default"
+            hint_text: "The default password is 123456. Please change it in profile screen if you haven't!"
+
+            text: "123456"
+
         ToggleButton:
             size_hint: None, None
             size: 35, 35
@@ -49,11 +54,12 @@
 <LoginScreen@Screen>:
     name: "login"
 
+    on_pre_enter: cruise_ship.play()
+
     RelativeLayout:
-        cruise_ship: _cruise_ship
 
         CruiseImage:
-            id: _cruise_ship
+            id: cruise_ship
             source: "res/cruise_ship.png"
             size: self.texture_size
 
@@ -72,4 +78,4 @@
             size_hint_y: None
             height: self.texture_size[1] + 12
 
-        LoginField
+        LoginField:

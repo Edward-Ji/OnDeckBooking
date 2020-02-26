@@ -149,7 +149,7 @@ class MessagePopup(ModalView):
         super().open(*largs, **kwargs)
         self.dismiss_schedule = Clock.schedule_once(self.close, 1.6)
 
-    def close(self, *largs):
+    def close(self, *args):
         self.fade = Animation(opacity=0, t="in_sine", duration=0.6)
         self.fade.start(self)
         self.close_schedule = Clock.schedule_once(self.dismiss, 0.6)

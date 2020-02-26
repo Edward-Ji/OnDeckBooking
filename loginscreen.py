@@ -2,7 +2,6 @@ from kivy.animation import Animation
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
-from kivy.uix.label import Label
 from kivy.uix.screenmanager import CardTransition
 
 from guest import Guest
@@ -17,6 +16,7 @@ class LoginField(BoxLayout):
         msg = Guest.login(usr_input.text, psw_input.text)
         if msg:
             MessagePopup(message=msg).open()
+            usr_input.focus = True
         else:
             usr_input.text = ''
             psw_input.text = ''
@@ -29,6 +29,9 @@ class CruiseImage(Image):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.play()
+
+    def play(self):
         self.pos = 150, 400
         animation = Animation(pos=(-175, 150), t="out_quad", duration=3)
         animation.start(self)

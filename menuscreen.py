@@ -50,28 +50,36 @@ class CalendarLayout(GridLayout):
 
 class ActivityPickButton(MainButton, ToggleButtonBehavior):
 
-    def no_activity_down(self):
-        all_btn = ToggleButtonBehavior.get_widgets(self.group)
-        for btn in all_btn:
-            if btn.name == Activity.no_activity().name:
-                btn.state = "down"
-        self.state = "normal"
-        del all_btn  # necessary for garbage collecting
+    last = []
+
+    def on_state(self, instance, value):
+        if value == "down":
+            ActivityPickButton.last.append(self)
+        if len(ActivityPickButton.last) > 2:
+            ActivityPickButton.last.pop(0)
+
+    @classmethod
+    def undo(cls):
+        cls.last[0].state = "down"
+        cls.last[0].state = "normal"
+        MessagePopup(message="Booking abandoned!").open()
 
 
 class ActivityBlock(BoxLayout, Activity):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        if Guest.get_booked(self.day) != self.name:
-            self.ids.pick_btn.state = "normal"
+        pick_btn = self.ids.pick_btn
+        if Guest.get_booked(self.day) == self.name:
+            pick_btn.state = "down"
+        pick_btn.bind(state=self.update)
 
     def _update(self, *args):
         Guest.book_activity(self.day, self.name)
-        MessagePopup(message="Bookings saved!").open()
+        MessagePopup(message="Booking saved!").open()
 
-    def update(self):
-        if self.ids.pick_btn.state == "down":
+    def update(self, instance, value):
+        if value == "down":
             if self.rating == "challenging":
                 popup = SelectionPopup(title="Warning",
                                        message="Be aware that this activity is challenging.\n"
@@ -80,7 +88,7 @@ class ActivityBlock(BoxLayout, Activity):
                 popup.add_choice(text="Book anyway",
                                  on_release=self._update)
                 popup.add_choice(text="Cancel",
-                                 on_release=lambda _: self.ids.pick_btn.no_activity_down())
+                                 on_release=lambda _: instance.undo())
                 popup.open()
             else:
                 self._update()
