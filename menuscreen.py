@@ -1,7 +1,7 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import CardTransition, Screen
-from kivy.uix.togglebutton import ToggleButtonBehavior
+from kivy.uix.behaviors.togglebutton import ToggleButtonBehavior
 
 from mainwidgets import MainButton, MainPopup, SelectionPopup, MessagePopup
 

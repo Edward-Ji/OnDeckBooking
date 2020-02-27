@@ -58,7 +58,11 @@ class HoverBehavior(Widget):
 class RoundedWidget(Widget):
 
     def collide_point(self, x, y):
-        pass
+        if self.width != self.height:
+            return super().collide_widget(x, y)
+        radius = self.width / 2
+        distance = ((x - self.center_x) ** 2 + (y - self.center_y) ** 2) ** 0.5
+        return distance <= radius
 
 
 class MainLabel(Label):
@@ -81,7 +85,7 @@ class MainButton(Button, HoverBehavior):
         self.canvas.remove(self.mask)
 
 
-class HeadingButton(Button, HoverBehavior):
+class HeadingButton(RoundedWidget, Button, HoverBehavior):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

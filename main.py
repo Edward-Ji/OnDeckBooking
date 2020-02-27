@@ -3,7 +3,8 @@ kivy.require("1.11.1")
 
 from kivy.app import App
 from kivy.config import Config
-from kivy.core.window import Window
+from kivy.core.window import Window, WindowBase
+from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
 from mainwidgets import *
@@ -15,15 +16,29 @@ from profilescreen import *
 from guest import *
 
 # configure window size, color and icon
-Window.size = 1200, 740
+WINDOW_WIDTH_MIN = 1000
+WINDOW_HEIGHT_MIN = 720
+Window.size = WINDOW_WIDTH_MIN, WINDOW_HEIGHT_MIN
 Config.set("kivy", "exit_on_escape", 0)
 Config.set("input", "mouse", "mouse,multitouch_on_demand")
+
+Factory.register("RoundedWidget", RoundedWidget)
 
 Builder.load_file("mainwidgets.kv")
 Builder.load_file("loginscreen.kv")
 Builder.load_file("menuscreen.kv")
 Builder.load_file("costscreen.kv")
 Builder.load_file("profilescreen.kv")
+
+
+def validate_window_size(*args):
+    if Window.width <= WINDOW_WIDTH_MIN:
+        Window.size = WINDOW_WIDTH_MIN, Window.height
+    if Window.height <= WINDOW_HEIGHT_MIN:
+        Window.size = Window.width, WINDOW_HEIGHT_MIN
+
+
+Window.bind(on_resize=validate_window_size)
 
 
 class MainScreenManager(ScreenManager):
