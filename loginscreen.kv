@@ -39,11 +39,7 @@
 
             text: "123456"
 
-        ToggleButton:
-            size_hint: None, None
-            size: 35, 35
-            background_normal: "res/password_eye_normal.png"
-            background_down: "res/password_eye_down.png"
+        PasswordEye:
             on_state: psw_input.password = self.state == "normal"
 
     MainButton:

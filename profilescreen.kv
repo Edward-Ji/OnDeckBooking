@@ -129,8 +129,15 @@
             text: "New password"
             color: grey_light
 
-        PasswordInput:
-            id: new_psw_input
+        BoxLayout:
+            size_hint_y: None
+            height: self.minimum_height
+
+            PasswordInput:
+                id: new_psw_input
+
+            PasswordEye:
+                on_state: new_psw_input.password = self.state == "normal"
 
         MainButton:
             pos_hint: {"center_x": .5}

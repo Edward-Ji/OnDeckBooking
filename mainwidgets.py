@@ -55,6 +55,12 @@ class HoverBehavior(Widget):
         pass
 
 
+class RoundedWidget(Widget):
+
+    def collide_point(self, x, y):
+        pass
+
+
 class MainLabel(Label):
     pass
 
@@ -98,6 +104,19 @@ class MainInput(TextInput):
         if not re.match(self.allowed_pat, substring):
             substring = ''
         return super().insert_text(substring, from_undo=from_undo)
+
+
+class PasswordEye(ToggleButton):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.schedule_hide = None
+
+    def on_state(self, instance, value):
+        if self.state == "down":
+            if self.schedule_hide:
+                self.schedule_hide.cancel()
+            self.schedule_hide = Clock.schedule_once(lambda _: setattr(self, "state", "normal"), 2)
 
 
 class MainPopup(Popup):
