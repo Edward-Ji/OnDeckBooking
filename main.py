@@ -16,13 +16,15 @@ from profilescreen import *
 from guest import *
 
 # configure window size, color and icon
-WINDOW_WIDTH_MIN = 1000
+WINDOW_WIDTH_MIN = 1200
 WINDOW_HEIGHT_MIN = 720
 Window.size = WINDOW_WIDTH_MIN, WINDOW_HEIGHT_MIN
 Config.set("kivy", "exit_on_escape", 0)
 Config.set("input", "mouse", "mouse,multitouch_on_demand")
 
 Factory.register("RoundedWidget", RoundedWidget)
+from kivy.uix.behaviors import TouchRippleButtonBehavior
+Factory.register("TouchRippleButtonBehavior", TouchRippleButtonBehavior)
 
 Builder.load_file("mainwidgets.kv")
 Builder.load_file("loginscreen.kv")

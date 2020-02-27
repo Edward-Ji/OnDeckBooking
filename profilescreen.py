@@ -1,6 +1,7 @@
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
+from kivy.properties import StringProperty
 
 from mainwidgets import MainPopup, SelectionPopup, MessagePopup
 

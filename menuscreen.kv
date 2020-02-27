@@ -1,12 +1,14 @@
 <CalendarActivityButton>:
-    day: 0
-    color_normal: grey if self.day <= 3 else orange
-    color_down: grey_down if self.day <= 3 else orange_down
+    color_normal: grey if self.unavailable else orange
+    color_down: grey_down if self.unavailable else orange_down
     markup: True
     text_size: root.width - 10, None
 
-<CalendarMealButton@MainButton>:
-    text: "Meal Menu"
+<CalendarMealButton>:
+    color_normal: grey if self.unavailable else orange
+    color_down: grey_down if self.unavailable else orange_down
+    markup: True
+    text_size: root.width - 10, None
 
 <CalendarBlock>:
     day: 0
@@ -15,6 +17,7 @@
     spacing: 5
 
     MainLabel:
+        id: day_label
         text: "Day " + str(root.day)
         color: grey
 
@@ -24,6 +27,7 @@
         size_hint: 1, 1
 
     CalendarMealButton:
+        id: meal_btn
         day: root.day
         size_hint: 1, 1
 

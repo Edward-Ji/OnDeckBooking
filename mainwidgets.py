@@ -4,16 +4,24 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics import Color, Rectangle
 from kivy.uix.button import Button
+from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.modalview import ModalView
 from kivy.uix.popup import Popup
-from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import Screen
+from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.widget import Widget
 from kivy.properties import BooleanProperty, StringProperty
 
 import re
+
+
+class LogoImage(Image):
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            MessagePopup(message="Designed and Developed Edward Ji 2020").open()
 
 
 class HoverBehavior(Widget):
@@ -69,7 +77,7 @@ class MainLabel(Label):
     pass
 
 
-class MainButton(Button, HoverBehavior):
+class MainButton(HoverBehavior, Button):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -85,7 +93,7 @@ class MainButton(Button, HoverBehavior):
         self.canvas.remove(self.mask)
 
 
-class HeadingButton(RoundedWidget, Button, HoverBehavior):
+class HeadingButton(RoundedWidget, HoverBehavior, Button):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -151,12 +159,12 @@ class MessagePopup(ModalView):
 
     def __init__(self, **kwargs):
         if MessagePopup.current:
+            MessagePopup.current.opacity = 0
             MessagePopup.current.dismiss()
         MessagePopup.current = self
         self.message = kwargs.pop("message")
-        self.dismiss_schedule = None
         self.fade = None
-        self.close_schedule = None
+        self.dismiss_schedule = None
         super().__init__(**kwargs)
 
     def on_touch_down(self, touch):
@@ -175,12 +183,12 @@ class MessagePopup(ModalView):
     def close(self, *args):
         self.fade = Animation(opacity=0, t="in_sine", duration=0.6)
         self.fade.start(self)
-        self.close_schedule = Clock.schedule_once(self.dismiss, 0.6)
+        self.dismiss_schedule = Clock.schedule_once(self.dismiss, 0.6)
 
     def dismiss(self, *largs, **kwargs):
-        MessagePopup.current = None
+        super().dismiss(*largs, **kwargs)
         if self.fade:
             self.fade.cancel(self)
-        if self.close_schedule:
-            self.close_schedule.cancel()
-        super().dismiss(*largs, **kwargs)
+        if self.dismiss_schedule:
+            self.dismiss_schedule.cancel()
+        MessagePopup.current = None

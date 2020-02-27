@@ -9,6 +9,11 @@
 #:set orange_trans 1, .45, .1, .5
 #:set transparent 0, 0, 0, 0
 
+<LogoImage>:
+    size_hint_x: None
+    width: self.height
+    source: "res/icon.png"
+
 <MainBanner@BoxLayout>:
     color: .4, .4, .4, 1
     canvas.before:
@@ -23,13 +28,10 @@
     padding: 15
     spacing: 10
 
-    Image:
-        size_hint_x: None
-        width: self.height
-        source: "res/icon.png"
+    LogoImage
 
 <MainLabel>:
-    font_size: "21dp"
+    font_size: "20dp"
     color: grey
     size_hint: None, None
     size: self.texture_size
@@ -64,7 +66,7 @@
     background_normal: ''
     size_hint: None, None
     size: tuple(map(lambda x: x + 24, self.texture_size))
-    font_size: "21dp"
+    font_size: "20dp"
     color: white
 
 <MainInput>:
@@ -73,14 +75,14 @@
 
     write_tab: False
     multiline: False
-    font_size: "24dp"
+    font_size: "21dp"
     foreground_color: white
     background_color: grey
     selection_color: orange_trans
     cursor_color: orange
     disabled_foreground_color: grey_light
     size_hint_y: None
-    height: 42
+    height: 40
 
 <PasswordInput@MainInput>:
     allowed_pat: r"\S"

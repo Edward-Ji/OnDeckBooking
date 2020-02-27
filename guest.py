@@ -1,6 +1,6 @@
 import binascii
+from datetime import date, datetime
 import hashlib
-from kivy.properties import StringProperty
 import os
 from tinydb import TinyDB, Query
 
@@ -46,6 +46,12 @@ class Activity:
     @property
     def img(self):
         return find_img(self.name)
+
+    @classmethod
+    def day(cls):
+        journey = db_activity.get(query.journey == "Kimberly Quest")
+        start_date = datetime.strptime(journey["start"], "%d%m%y")
+        return (datetime.today() - start_date).days
 
     @classmethod
     def no_activity(cls):
@@ -95,7 +101,7 @@ class Guest:
     @classmethod
     def change_psw(cls, ori_psw, new_psw):
         ori_hash = cls.get_profile("hash")
-        if verify_psw(ori_psw, ori_hash):
+        if not verify_psw(ori_psw, ori_hash):
             return "Incorrect original password!"
         elif ori_psw == new_psw:
             return "Your new password is the same as the original one!"
