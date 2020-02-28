@@ -1,0 +1,20 @@
+{
+  "_default": {
+    "1": {
+      "name": "Normal meal",
+      "desc": "Fresh and delicately cooked chicken, pork or beef, combined with carefully assorted vegetables."
+    },
+    "2": {
+      "name": "Seafood meal",
+      "desc": "Delicious fish, prawn and crab we just caught from the sea."
+    },
+    "3": {
+      "name": "Vegetarian meal",
+      "desc": "Fresh and delicately assorted vegetables, with delicious sauce."
+    },
+    "4": {
+      "name": "No food",
+      "desc": "Book only when you want no food on this day!"
+    }
+  }
+}

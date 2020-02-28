@@ -1,40 +1,9 @@
+# activity booking widgets
 <CalendarActivityButton>:
     color_normal: grey if self.unavailable else orange
     color_down: grey_down if self.unavailable else orange_down
     markup: True
     text_size: root.width - 10, None
-
-<CalendarMealButton>:
-    color_normal: grey if self.unavailable else orange
-    color_down: grey_down if self.unavailable else orange_down
-    markup: True
-    text_size: root.width - 10, None
-
-<CalendarBlock>:
-    day: 0
-
-    orientation: "vertical"
-    spacing: 5
-
-    MainLabel:
-        id: day_label
-        text: "Day " + str(root.day)
-        color: grey
-
-    CalendarActivityButton:
-        id: activity_btn
-        day: root.day
-        size_hint: 1, 1
-
-    CalendarMealButton:
-        id: meal_btn
-        day: root.day
-        size_hint: 1, 1
-
-<CalendarLayout>:
-    cols: 7
-    padding: 15
-    spacing: 8
 
 <ActivityPickButton>:
     group: "activity_picker"
@@ -91,6 +60,87 @@
 
 <ActivityPicker>:
     size_hint: .9, .9
+
+# meal booking widgets
+<CalendarMealButton>:
+    color_normal: grey if self.unavailable else orange
+    color_down: grey_down if self.unavailable else orange_down
+    markup: True
+    text_size: root.width - 10, None
+
+<MealPickButton>:
+    group: "meal_picker"
+    allow_no_selection: False
+    background_color: grey_light if self.state == "normal" else grey
+    text: "Book..." if self.state == "normal" else "Booked"
+    color: grey_dark
+
+<MealBlock>:
+    orientation: "vertical"
+    size_hint_max_x: 275
+
+    MainScrollView:
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+
+            Image:
+                size_hint: None, None
+                width: root.width
+                height: self.width
+                source: root.img
+            MainLabel:
+                text_size: root.width, None
+                size: self.texture_size
+                text: root.name
+                color: white
+            MainLabel:
+                text_size: root.width, None
+                size: self.texture_size
+                text: root.desc
+                font_size: 15
+                color: grey_light
+
+    MealPickButton:
+        id: pick_btn
+        name: root.name
+        pos_hint: {"center_x": .5}
+
+<MealLayout>:
+    spacing: 5
+    pos_hint: {"center_x": .5}
+
+<MealPicker>:
+    size_hint: .9, .9
+
+# calendar widgets
+<CalendarBlock>:
+    day: 0
+    doc: ''
+
+    orientation: "vertical"
+    spacing: 5
+
+    MainLabel:
+        id: day_label
+        text: "Day " + str(root.day) + root.doc
+        color: grey
+
+    CalendarActivityButton:
+        id: activity_btn
+        day: root.day
+        size_hint: 1, 1
+
+    CalendarMealButton:
+        id: meal_btn
+        day: root.day
+        size_hint: 1, 1
+
+<CalendarLayout>:
+    cols: 7
+    padding: 15
+    spacing: 8
 
 <MenuScreen>:
     name: "menu"

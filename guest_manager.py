@@ -1,5 +1,9 @@
 from tinydb import TinyDB
 import guest
+from datetime import date
+
+date = {"journey": "Kimberley Quest",
+        "start": date.today().strftime("%d%m%y")}
 
 data = '''Smith,Peter,1,43,M,Vegetarian food only,"13 Wallaby Way, Port Jackson. NSW."
 Smith,Le-Anne,1,40,F,Vegetarian food only,"13 Wallaby Way, Port Jackson. NSW."
@@ -22,7 +26,7 @@ for line in data.split('\n'):
     address = ''.join(profile[6:]).replace('"', '')
     hashed = guest.hash_psw("123456")
     bookings = ["No Activity" for _ in range(14)]
-    meals = ["Normal" for _ in range(14)]
+    meals = ["Normal meal" for _ in range(14)]
     guests.append({"username": first[0] + last + str(cabin),
                    "hash": hashed,
                    "last": last,
@@ -32,10 +36,12 @@ for line in data.split('\n'):
                    "gender": gender,
                    "notes": notes,
                    "address": address,
-                   "bookings": bookings,
+                   "activities": bookings,
                    "meals": meals})
 
 db = TinyDB("guest.json", indent=2)
-db.purge()
+db.purge_tables()
+db.insert(date)
+table_profile = db.table("profiles")
 for guest in guests:
-    db.insert(guest)
+    table_profile.insert(guest)

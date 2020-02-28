@@ -63,7 +63,6 @@ for day in range(1, 15):
 
 db = TinyDB("activity.json", indent=2)
 db.purge_tables()
-db.insert({"start": date.today().strftime("%d%m%y")})
 tb_detail = db.table("details")
 for each in activity_details:
     tb_detail.insert(each)

@@ -14,6 +14,8 @@ class ReceiptBlock(BoxLayout):
         self.name = kwargs.pop("name")
         self.day = kwargs.pop("day")
         self.price = kwargs.pop("price")
+        if self.day < get_day() + Activity.BOOK_AHEAD:
+            self.name += " (Finished)"
         super().__init__(**kwargs)
 
 

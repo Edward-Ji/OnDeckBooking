@@ -6,11 +6,15 @@ from tinydb import TinyDB, Query
 
 SALT = b"sr0te2eQ20Klubmyie"
 ACTIVITY_IMG_DIR = "res/activity_img"
+UNKNOWN_ACTIVITY_IMG = "activity_unknown.png"
+MEAL_IMG_DIR = "res/meal_img"
 
 db_guest = TinyDB("guest.json", indent=2)
+tb_profiles = db_guest.table("profiles")
 db_activity = TinyDB("activity.json", indent=2)
 tb_details = db_activity.table("details")
 tb_calendar = db_activity.table("calendar")
+db_meal = TinyDB("meal.json", indent=2)
 query = Query()
 
 
@@ -24,16 +28,24 @@ def verify_psw(psw, stored_hash):
     return hash_psw(psw) == stored_hash
 
 
-def find_img(name):
+def find_img(name, path):
     img_name = name.lower().replace(' ', '_')
-    for root, dirs, files in os.walk(ACTIVITY_IMG_DIR):
+    for root, dirs, files in os.walk(path):
         for fname in files:
             if img_name in fname:
                 return os.path.join(root, fname)
-    return os.path.join(ACTIVITY_IMG_DIR, "activity_unknown.png")
+    return os.path.join(path, UNKNOWN_ACTIVITY_IMG)
+
+
+def get_day():
+    journey = db_guest.get(query.journey == "Kimberley Quest")
+    start_date = datetime.strptime(journey["start"], "%d%m%y")
+    return (datetime.today() - start_date).days + 1
 
 
 class Activity:
+
+    BOOK_AHEAD = 3
 
     def __init__(self, **kwargs):
         self.name = kwargs.pop("name")
@@ -45,13 +57,7 @@ class Activity:
 
     @property
     def img(self):
-        return find_img(self.name)
-
-    @classmethod
-    def day(cls):
-        journey = db_activity.get(query.journey == "Kimberly Quest")
-        start_date = datetime.strptime(journey["start"], "%d%m%y")
-        return (datetime.today() - start_date).days
+        return find_img(self.name, ACTIVITY_IMG_DIR)
 
     @classmethod
     def no_activity(cls):
@@ -62,18 +68,36 @@ class Activity:
 
     @classmethod
     def find(cls, name):
-        details = tb_details.search(query.name == name)[0]
+        details = tb_details.get(query.name == name)
         return cls(**details)
 
     @classmethod
     def on_day(cls, day):
-        data = tb_calendar.search(query.day == day)[0]
+        data = tb_calendar.get(query.day == day)
         activities = {}
         for rating, name in data.items():
             if rating != "day" and name:
                 activities[rating] = cls.find(name)
         activities["no activity"] = cls.no_activity()
         return activities
+
+
+class Meal:
+
+    def __init__(self, **kwargs):
+        self.name = kwargs.pop("name")
+        self.desc = kwargs.pop("desc")
+        if "day" in kwargs:
+            self.day = kwargs.pop("day")
+
+    @property
+    def img(self):
+        return find_img(self.name, MEAL_IMG_DIR)
+
+    @classmethod
+    def load(cls):
+        for info in db_meal.all():
+            yield cls(**info)
 
 
 class Guest:
@@ -83,7 +107,7 @@ class Guest:
     @staticmethod
     def find(username):
         # return a dictionary of user profiles that match the username
-        return db_guest.search(query.username == username)
+        return tb_profiles.search(query.username == username)
 
     @classmethod
     def login(cls, usr, psw):
@@ -110,38 +134,37 @@ class Guest:
         else:
             cls.set_profile("hash", hash_psw(new_psw))
 
-
     @classmethod
     def logout(cls):
         cls.logged_in = None
 
     @classmethod
     def get_profile(cls, criteria):
-        profile = db_guest.search(query.username == cls.logged_in)[0]
+        profile = tb_profiles.get(query.username == cls.logged_in)
         return profile[criteria]
 
     @classmethod
     def set_profile(cls, criteria, value):
-        db_guest.update({criteria: value}, query.username == cls.logged_in)
+        tb_profiles.update({criteria: value}, query.username == cls.logged_in)
         if criteria == "username":
             cls.logged_in = value
 
     @classmethod
-    def get_booked(cls, day):
-        bookings = cls.get_profile("bookings")
+    def get_booked(cls, criteria, day):
+        bookings = cls.get_profile(criteria)
         return bookings[day-1]
 
     @classmethod
-    def book_activity(cls, day, activity):
+    def book_activity(cls, criteria, day, item):
         if not cls.logged_in:
             return
 
         def update_booking(d, a):
             def transform(doc):
-                doc["bookings"][d-1] = a
+                doc[criteria][d-1] = a
             return transform
 
-        db_guest.update(update_booking(day, activity), query.username == cls.logged_in)
+        tb_profiles.update(update_booking(day, item), query.username == cls.logged_in)
 
     @classmethod
     def costs(cls):
@@ -149,7 +172,7 @@ class Guest:
             return
         receipt = []
         total = 0
-        bookings = db_guest.search(query.username == cls.logged_in)[0]["bookings"]
+        bookings = tb_profiles.get(query.username == cls.logged_in)["activities"]
         day_count = 1
         for name in bookings:
             if name != Activity.no_activity().name:

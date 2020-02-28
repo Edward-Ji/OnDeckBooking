@@ -21,7 +21,7 @@ class LogoImage(Image):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            MessagePopup(message="Designed and Developed Edward Ji 2020").open()
+            MessagePopup(message="SDD Edward Ji 2020").open()
 
 
 class HoverBehavior(Widget):
