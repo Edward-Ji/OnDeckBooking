@@ -1,4 +1,3 @@
-from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivy.properties import NumericProperty
@@ -11,6 +10,7 @@ from guest import *
 class ReceiptBlock(BoxLayout):
 
     def __init__(self, **kwargs):
+        # initiate with given activity information
         self.name = kwargs.pop("name")
         self.day = kwargs.pop("day")
         self.price = kwargs.pop("price")
@@ -41,6 +41,7 @@ class ReceiptLayout(BoxLayout):
         receipt, total = Guest.costs()
         if receipt:
             for activity in receipt:
+                # instantiate rows using activity objects
                 layout.add_widget(ReceiptBlock(name=activity.name,
                                                day=activity.day,
                                                price=activity.price))

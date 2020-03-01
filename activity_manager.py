@@ -1,6 +1,5 @@
-from tinydb import TinyDB, Query
+from tinydb import TinyDB
 from random import choice
-from datetime import date
 
 activity_details = [{"name": "Glass bottom explorer",
                      "rating": "easy",

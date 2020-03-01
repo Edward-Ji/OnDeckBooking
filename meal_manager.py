@@ -1,7 +1,5 @@
 from tinydb import TinyDB
 
-db = TinyDB("meal.json", indent=2)
-
 meal_options = [{"name": "Normal meal",
                  "desc": "Fresh and delicately cooked chicken, pork or beef, "
                          "combined with carefully assorted vegetables."},
@@ -13,6 +11,7 @@ meal_options = [{"name": "Normal meal",
                 {"name": "No food",
                  "desc": "Book only when you want no food on this day!"}]
 
+db = TinyDB("meal.json", indent=2)
 db.purge()
 for option in meal_options:
     db.insert(option)

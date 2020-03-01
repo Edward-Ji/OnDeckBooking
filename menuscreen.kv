@@ -3,19 +3,23 @@
     color_normal: grey if self.unavailable else orange
     color_down: grey_down if self.unavailable else orange_down
     markup: True
-    text_size: root.width - 10, None
+    text_size: root.width - 10, None  # wrap text at a certain width
 
+# activity booking toggle button
 <ActivityPickButton>:
     group: "activity_picker"
-    allow_no_selection: False
+    allow_no_selection: False  # no activity is included as an option
     background_color: grey_light if self.state == "normal" else grey
     text: "Book..." if self.state == "normal" else "Booked"
     color: grey_dark
 
+# full block with all information and booking toggle for one activity
 <ActivityBlock>:
     orientation: "vertical"
     size_hint_max_x: 275
 
+    # all information labels are scrollable
+    # while booking toggle remains at bottom
     MainScrollView:
         BoxLayout:
             orientation: "vertical"
@@ -25,43 +29,51 @@
             Image:
                 size_hint: None, None
                 width: root.width
+                # for horizontal alignment of images across all blocks
                 height: self.width
                 source: root.img
-            MainLabel:
-                text_size: root.width, None
+
+            MainLabel:  # activity name label
+                text_size: root.width, None  # wrap at certain width
                 size: self.texture_size
                 text: root.name
                 color: white
-            MainLabel:
+
+            MainLabel:  # activity rating label
                 pos_hint: {"center_x": .5}
                 height: self.texture_size[1]
                 text: "Rating: " + root.rating
                 font_size: "18dp"
                 color: grey_light
-            MainLabel:
-                text_size: root.width, None
+
+            MainLabel:  # activity description label
+                text_size: root.width, None  # wrap at certain width
                 size: self.texture_size
                 text: root.desc
                 font_size: 15
                 color: grey_light
-            MainLabel:
+
+            MainLabel:  # activity price label
                 pos_hint: {"center_x": .5}
                 text: "Price: ${:.2f}".format(root.price)
                 color: grey_light
 
-    ActivityPickButton:
+    ActivityPickButton:  # activity booking toggle
         id: pick_btn
         name: root.name
         pos_hint: {"center_x": .5}
 
+# contains all activities available for given day
 <ActivityLayout>:
     spacing: 5
     pos_hint: {"center_x": .5}
 
+# popup with layout containing all activities available for given day
 <ActivityPicker>:
     size_hint: .9, .9
 
-# meal booking widgets
+# meal booking widgets from here
+# similar to their activity booking counterparts
 <CalendarMealButton>:
     color_normal: grey if self.unavailable else orange
     color_down: grey_down if self.unavailable else orange_down
@@ -114,7 +126,8 @@
 <MealPicker>:
     size_hint: .9, .9
 
-# calendar widgets
+# building block in calendar layout
+# accounts for a single day
 <CalendarBlock>:
     day: 0
     doc: ''
@@ -122,16 +135,18 @@
     orientation: "vertical"
     spacing: 5
 
-    MainLabel:
+    MainLabel:  # show the number of day in calendar
         id: day_label
         text: "Day " + str(root.day) + root.doc
         color: grey
 
+    # call on activity booking popup for the day
     CalendarActivityButton:
         id: activity_btn
         day: root.day
         size_hint: 1, 1
 
+    # call on meal booking popup for the day
     CalendarMealButton:
         id: meal_btn
         day: root.day
@@ -148,7 +163,7 @@
     BoxLayout:
         orientation: "vertical"
 
-        MainBanner:
+        MainBanner:  # top bar
             MainHeading:
                 heading: "Menu"
             HeadingButton:

@@ -1,0 +1,42 @@
+<ResetDatabaseButton>:
+    name: ''
+    text: "reset " + self.name + " database"
+
+<SetDayInput>:
+    size_hint_y: None
+    height: self.minimum_height
+
+    MainLabel:
+        text: "set today to day "
+    MainInput:
+        id: day_input
+        allowed_len: 2
+        allowed_pat: r'\d'
+    MainButton:
+        text: "confirm"
+        on_release: root.confirm()
+
+<DebugScreen@Screen>:
+    name: "debug"
+
+    MainLabel:
+        text:
+            "This is for testing purpose only, "\
+            "the actual solution will not include this part of the program!"
+
+    StackLayout:
+        padding: 15
+        spacing: 10
+
+        ResetDatabaseButton:
+            name: "guest"
+        ResetDatabaseButton:
+            name: "activity"
+        ResetDatabaseButton:
+            name: "meal"
+
+        SetDayInput:
+
+        MainButton:  # back to previous screen button
+            text: "back to previous screen"
+            on_release: root.manager.undo()

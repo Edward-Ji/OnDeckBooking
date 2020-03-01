@@ -9,10 +9,12 @@ from mainwidgets import MainButton, MainPopup, SelectionPopup, MessagePopup
 from guest import *
 
 
+# button that shows activity booking popup when pressed in calendar
 class CalendarActivityButton(MainButton):
-    
+
     unavailable = BooleanProperty(False)
 
+    # update button text to information about booking
     def refresh(self):
         if self.day <= Activity.BOOK_AHEAD:
             self.text = "No activity available"
@@ -27,19 +29,23 @@ class CalendarActivityButton(MainButton):
                 self.unavailable = True
             else:
                 self.text += "\n[i][size=15]Tap to book[/size][/i]"
+                self.unavailable = False
 
     def on_release(self):
+        # handle unavailable situations
         if self.day <= Activity.BOOK_AHEAD:
             MessagePopup(message="There are no activities available for the first three days.").open()
         elif self.day < get_day() + Activity.BOOK_AHEAD:
             MessagePopup(message="You need to book activities at least three days ahead!").open()
         else:
+            # initiate and open activity picker popup
             activity_picker = ActivityPicker(day=self.day)
-            activity_picker.refresh_ref = self
+            activity_picker.refresh_ref = self  # save for future update
             activity_picker.open()
 
 
 class ActivityPickButton(MainButton, ToggleButtonBehavior):
+
     last = []
 
     def on_state(self, instance, value):
@@ -48,9 +54,11 @@ class ActivityPickButton(MainButton, ToggleButtonBehavior):
         if len(ActivityPickButton.last) > 2:
             ActivityPickButton.last.pop(0)
 
+    # allow regression when booking challenge activity
     @classmethod
     def undo(cls):
         cls.last[0].state = "down"
+        # note the index below is 0 because cls.last is updated just before
         cls.last[0].state = "normal"
         MessagePopup(message="Booking abandoned!").open()
 
@@ -64,13 +72,16 @@ class ActivityBlock(BoxLayout, Activity):
             pick_btn.state = "down"
         pick_btn.bind(state=self.update)
 
+    # allow regression when booking challenging activity
     def _update(self, *args):
+        # update activity booking database
         Guest.book_activity("activities", self.day, self.name)
         MessagePopup(message="Booking saved!").open()
 
     def update(self, instance, value):
         if value == "down":
             if self.rating == "challenging":
+                # ask when booking activity rated as challenging
                 popup = SelectionPopup(title="Warning",
                                        message="Be aware that this activity is challenging.\n"
                                                "Please confirm that you have no disability or disease "
@@ -89,7 +100,9 @@ class ActivityLayout(BoxLayout):
     def __init__(self, **kwargs):
         day = kwargs.pop("day")
         super().__init__(**kwargs)
+        # instantiate all activity available on the day
         for rating, activity in Activity.on_day(day=day).items():
+            # add day to instance for future update to database
             self.add_widget(ActivityBlock(name=activity.name,
                                           rating=activity.rating,
                                           desc=activity.desc,
@@ -108,10 +121,23 @@ class ActivityPicker(MainPopup):
 
     def dismiss(self, *largs, **kwargs):
         super().dismiss(*largs, **kwargs)
+        # refresh calendar button to show booked activity
         self.refresh_ref.refresh()
 
 
+"""
+Above are activity booking widgets.
+Below are meal booking widgets.
+These parts of the program wasn't perfectly planned,
+ so their common grounds are not integrated.
+Meal booking widgets are altered code of activity booking widgets,
+ so the basic logic and interface is similar.
+For this reason, comments are neglected for meal booking widgets.
+"""
+
+
 class CalendarMealButton(MainButton):
+
     unavailable = BooleanProperty(False)
 
     def refresh(self):
@@ -120,6 +146,7 @@ class CalendarMealButton(MainButton):
             self.unavailable = True
         else:
             self.text += "\n[i][size=15]Tap to book[/size][/i]"
+            self.unavailable = False
 
     def on_release(self):
         if self.day < get_day():
@@ -131,6 +158,7 @@ class CalendarMealButton(MainButton):
 
 
 class MealPickButton(MainButton, ToggleButtonBehavior):
+
     last = []
 
     def on_state(self, instance, value):
@@ -212,28 +240,32 @@ class CalendarLayout(GridLayout):
 class MenuScreen(Screen):
 
     def on_pre_enter(self, *args):
+        # refresh the booking calendar every time screen appears
         self.ids.calendar.refresh()
 
-    def _logout(self, *args):
-        self.manager.transition = CardTransition(direction="down", mode="push")
-        self.manager.current = "login"
-        Guest.logout()
-
     def logout(self):
+
+        def _logout(*args):
+            # change to login screen and logout
+            self.manager.transition = CardTransition(direction="down", mode="push")
+            self.manager.current = "login"
+            Guest.logout()
+
+        # warn about logging out first
         popup = SelectionPopup(title="Warning",
                                message="After logout you have to type in your credentials again.\n"
                                        "Do you really want to logout?")
         popup.add_choice(text="Logout",
-                         on_release=self._logout)
+                         on_release=_logout)
         popup.add_choice(text="Cancel")
         popup.open()
 
-    def to_profile(self):
+    def to_profile(self):  # go to profile screen with set animation
         self.manager.transition = CardTransition(direction="down", mode="push")
         self.manager.current = "profile"
         self.manager.transition = CardTransition(direction="up", mode="pop")
 
-    def to_cost(self):
+    def to_cost(self):  # go to cost screen with set animation
         self.manager.transition = CardTransition(direction="down", mode="push")
         self.manager.current = "cost"
         self.manager.transition = CardTransition(direction="up", mode="pop")

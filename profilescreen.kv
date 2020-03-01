@@ -1,10 +1,11 @@
+# password input box with label
 <PasswordInputLayout@BoxLayout>:
     name: ''
     text: psw_input.text
     size_hint_y: None
     height: self.minimum_height
 
-    MainLabel:
+    MainLabel:  # name label
         size_hint_x: None
         width: 300
         text: root.name
@@ -12,6 +13,7 @@
     PasswordInput:
         id: psw_input
 
+# profile input box for a single criteria
 <ProfileInput>:
     name: ''
     allowed_pat: r'.'
@@ -23,7 +25,7 @@
     height: self.minimum_height
     pos_hint: {"center_x": .5}
 
-    AlignLabel:
+    AlignLabel:  # criteria
         size_hint: None, 1
         width: 120
         text: root.name
@@ -36,6 +38,7 @@
         multiline: root.multiline
         disabled: root.readonly
 
+# change password criteria in profile screen
 <ProfilePassword>:
     size_hint: .9, None
     height: self.minimum_height
@@ -53,6 +56,7 @@
         color: white
         on_release: root.change_psw()
 
+# input boxes for all profile criteria
 <ProfileField@BoxLayout>:
     orientation: "vertical"
     padding: 24
@@ -103,6 +107,7 @@
     pos_hint: {"center_x": .5}
     text: "Save & Close"
 
+# change password layout for change password popup
 <PasswordChangeLayout>:
 
     anchor_x: "center"
@@ -114,15 +119,24 @@
         height: self.minimum_height
         spacing: 5
 
+        # original password input
         MainLabel:
             size_hint_x: None
             width: 300
             text: "Original password"
             color: grey_light
 
-        PasswordInput:
-            id: ori_psw_input
+        BoxLayout:
+            size_hint_y: None
+            height: self.minimum_height
 
+            PasswordInput:
+                id: ori_psw_input
+
+            PasswordEye:
+                on_state: new_psw_input.password = self.state == "normal"
+
+        # new password input
         MainLabel:
             size_hint_x: None
             width: 300
@@ -150,7 +164,7 @@
     BoxLayout:
         orientation: "vertical"
 
-        MainBanner:
+        MainBanner:  # top bar
             MainHeading:
                 heading: "Profile"
             HeadingButton:
@@ -158,10 +172,11 @@
                 on_release: root.to_menu()
 
         MainScrollView:
+            # scrollable profile fields so that the save button always remain visible
             ProfileField:
                 id: field
 
-        MainLabel:
+        MainLabel:  # notice
             padding: 10, 10
             text_size: root.width, None
             size: self.texture_size

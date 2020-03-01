@@ -2,15 +2,15 @@
     size_hint_y: None
     height: 65
 
-    AlignLabel:
+    AlignLabel:  # activity name
         size_hint: .6, 1
         text: root.name
         halign: "left"
-    AlignLabel:
+    AlignLabel:  # booked day no.
         size_hint: .2, 1
         text: str(root.day)
         halign: "right"
-    AlignLabel:
+    AlignLabel:  # activity price
         size_hint: .2, 1
         text: "${:.2f}".format(root.price)
         halign: "right"
@@ -26,7 +26,7 @@
             size_hint_y: None
             height: self.minimum_height
 
-    BoxLayout:
+    BoxLayout:  # display total price at bottom
         size_hint_y: None
         height: 65
         padding: 10
@@ -61,7 +61,7 @@
                 name: "menu"
                 on_release: root.manager.current = "menu"
 
-        BoxLayout:  # heading of the receipt table
+        BoxLayout:  # titles of the receipt table
             size_hint_y: None
             height: 65
             padding: 10
