@@ -19,14 +19,22 @@
 <DebugScreen@Screen>:
     name: "debug"
 
-    MainLabel:
-        text:
-            "This is for testing purpose only, "\
-            "the actual solution will not include this part of the program!"
-
-    StackLayout:
+    BoxLayout:
+        orientation: "vertical"
         padding: 15
         spacing: 10
+
+        MainLabel:
+            text:
+                "This is for testing purpose only, "\
+                "the actual solution will not include this part of the program!\n"\
+                "Do not reset any database unless the program encounters a fatal error!"
+
+        MainButton:  # back to previous screen button
+            text: "back to previous screen"
+            on_release: root.manager.undo()
+
+        SetDayInput:
 
         ResetDatabaseButton:
             name: "guest"
@@ -34,9 +42,3 @@
             name: "activity"
         ResetDatabaseButton:
             name: "meal"
-
-        SetDayInput:
-
-        MainButton:  # back to previous screen button
-            text: "back to previous screen"
-            on_release: root.manager.undo()
