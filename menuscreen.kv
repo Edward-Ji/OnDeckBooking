@@ -158,6 +158,8 @@
     spacing: 8
 
 <MenuScreen>:
+    username: ''
+
     name: "menu"
 
     BoxLayout:
@@ -178,7 +180,7 @@
 
         AlignLabel:
             height: 65
-            text: "Welcome aboard Kimberley Quest!"
+            text: "Welcome aboard Kimberley Quest, {}!".format(root.username)
             color: grey
             left: 0
 

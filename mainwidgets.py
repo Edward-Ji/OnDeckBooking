@@ -2,13 +2,14 @@ from kivy.animation import Animation
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.factory import Factory
 from kivy.graphics import Color, Rectangle
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.modalview import ModalView
 from kivy.uix.popup import Popup
-from kivy.uix.screenmanager import Screen
 from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.widget import Widget
@@ -17,6 +18,22 @@ from kivy.properties import BooleanProperty, StringProperty
 import re
 
 RAPID_CLICK = .35
+
+
+class Cursor:
+
+    _default = "arrow"
+    trigger = None
+
+    @classmethod
+    def change(cls, widget, name):
+        Window.set_system_cursor(name)
+        cls.trigger = widget
+
+    @classmethod
+    def restore(cls, widget):
+        if cls.trigger is widget:
+            Window.set_system_cursor(cls._default)
 
 
 # logo image also serves as entry to debug screen
@@ -32,16 +49,17 @@ class LogoImage(Image):
             if self.reset:
                 self.reset.cancel()
             self.reset = Clock.schedule_once(lambda _: setattr(self, "press_count", 0), RAPID_CLICK)
-            if 7 <= self.press_count <= 9:
-                MessagePopup(message="Tap {} more time(s) to debug mode!".format(10 - self.press_count)).open()
+            if 5 <= self.press_count <= 9:
+                MessagePopup(message="Tap {} more time(s) to enter debug mode!".format(10 - self.press_count)).open()
             elif self.press_count == 10:
                 MessagePopup(message="You are now in debug mode!").open()
                 App.get_running_app().root.current = "debug"
 
 
 # provoke event upon the start and end of mouse hovering
-class HoverBehavior(Widget):
+class HoverBehavior(ButtonBehavior):
 
+    hovered_ins = None
     hovered = BooleanProperty(False)
 
     def __init__(self, **kwargs):
@@ -50,19 +68,24 @@ class HoverBehavior(Widget):
         Window.bind(mouse_pos=self.on_mouse_pos)
         super(HoverBehavior, self).__init__(**kwargs)
 
-    # walk widget tree to check widget is inside a modal view
     @property
-    def inside_modal_view(self):
+    def in_view(self):
+        root_widgets = App.get_running_app().root_window.children
+        if not isinstance(root_widgets[0], MessagePopup):
+            foremost = root_widgets[0]
+        else:
+            foremost = root_widgets[1]
         parent = self.parent
-        while parent and not isinstance(parent, Screen):
-            if isinstance(parent, ModalView):
+        while parent:
+            temp = parent.parent
+            if temp is foremost:
                 return True
-            parent = parent.parent
+            if parent is temp:
+                return False
+            parent = temp
 
     def on_mouse_pos(self, *args):
-        if isinstance(App.get_running_app().root_window.children[0], Popup)\
-                and not self.inside_modal_view:
-            # do not provoke event when a popup is on display unless widget is in the popup
+        if not self.in_view:
             return
         pos = args[1]
         inside = self.collide_point(*self.to_widget(*pos))
@@ -81,6 +104,10 @@ class HoverBehavior(Widget):
     # provoked when mouse leaves area over widget
     def on_hover_leave(self):
         pass
+
+    def on_touch_up(self, touch):
+        self.on_hover_leave()
+        return super(HoverBehavior, self).on_touch_up(touch)
 
 
 # handle widget as rounded during collision event
@@ -113,10 +140,16 @@ class MainButton(HoverBehavior, Button):
             Color(rgba=(1, 1, 1, .08))
             self.mask = Rectangle(size=self.size,
                                   pos=self.pos)
+        # set cursor icon to hand
+        Cursor.change(self, "hand")
 
     def on_hover_leave(self):
         # restore button when mouse hover event ends
-        self.canvas.remove(self.mask)
+        if self.mask:
+            self.canvas.remove(self.mask)
+            self.mask = None
+        # restore cursor icon back to arrow
+        Cursor.restore(self)
 
 
 # button displayed in the top bar
@@ -131,13 +164,19 @@ class HeadingButton(RoundedBehavior, HoverBehavior, Button):
         self.hint = Label(text=self.name.title(),
                           center=(self.center_x, self.y - 6))
         self.add_widget(self.hint)
+        # set cursor icon to hand
+        Cursor.change(self, "hand")
 
     def on_hover_leave(self):
         # restore button when mouse leaves
-        self.remove_widget(self.hint)
+        if self.hint:
+            self.remove_widget(self.hint)
+            self.hint = None
+        # restore cursor icon back to arrow
+        Cursor.restore(self)
 
 
-class MainInput(TextInput):
+class MainInput(TextInput, HoverBehavior):
 
     def insert_text(self, substring, from_undo=False):
         # restrict input length to allowed length
@@ -147,6 +186,15 @@ class MainInput(TextInput):
         if not re.match(self.allowed_pat, substring):
             substring = ''
         return super().insert_text(substring, from_undo=from_undo)
+
+    def on_hover_enter(self):
+        if not self.disabled:
+            Cursor.change(self, "ibeam")
+        else:
+            Cursor.change(self, "no")
+
+    def on_hover_leave(self):
+        Cursor.restore(self)
 
 
 # toggle show and hide password in input box
@@ -232,3 +280,7 @@ class MessagePopup(ModalView):
         if self.dismiss_schedule:
             self.dismiss_schedule.cancel()
         MessagePopup.current = None
+
+
+Factory.register("RoundedWidget", RoundedBehavior)
+Factory.register("HoverBehavior", HoverBehavior)

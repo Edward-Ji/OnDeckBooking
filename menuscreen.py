@@ -54,11 +54,15 @@ class ActivityPickButton(MainButton, ToggleButtonBehavior):
         if len(ActivityPickButton.last) > 2:
             ActivityPickButton.last.pop(0)
 
+    def on_hover_enter(self):
+        if self.state == "normal":
+            super().on_hover_enter()
+
     # allow regression when booking challenge activity
     @classmethod
     def undo(cls):
         cls.last[0].state = "down"
-        # note the index below is 0 because cls.last is updated just before
+        # note the index is 0 next line because cls.last is updated last line
         cls.last[0].state = "normal"
         MessagePopup(message="Booking abandoned!").open()
 
@@ -167,6 +171,10 @@ class MealPickButton(MainButton, ToggleButtonBehavior):
         if len(MealPickButton.last) > 2:
             MealPickButton.last.pop(0)
 
+    def on_hover_enter(self):
+        if self.state == "normal":
+            super().on_hover_enter()
+
 
 class MealBlock(BoxLayout, Meal):
 
@@ -242,6 +250,7 @@ class MenuScreen(Screen):
     def on_pre_enter(self, *args):
         # refresh the booking calendar every time screen appears
         self.ids.calendar.refresh()
+        self.username = Guest.logged_in
 
     def logout(self):
 

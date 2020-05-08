@@ -1,11 +1,25 @@
+<ReceiptCancelButton>:
+    color_normal: grey if self.unavailable else orange
+    color_down: grey_down if self.unavailable else orange_down
+    text: "Finished" if self.unavailable else "Cancel"
+    pos_hint: {"center_y": .5}
+
 <ReceiptBlock>:
     size_hint_y: None
     height: 65
 
-    AlignLabel:  # activity name
+    BoxLayout:  # activity name and cancel button
+        padding: 15
+        spacing: 28
         size_hint: .6, 1
-        text: root.name
-        halign: "left"
+
+        ReceiptCancelButton:
+            unavailable: root.finished
+
+        MainLabel:  # activity name
+            text: root.name
+            pos_hint: {"center_y": .5}
+
     AlignLabel:  # booked day no.
         size_hint: .2, 1
         text: str(root.day)
