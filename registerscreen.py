@@ -46,6 +46,10 @@ class RegisterInput(MainInput):
 
 
 class RegisterInputField(BoxLayout):
+    
+    @property
+    def valid(self):
+        return self.ids.input.valid
 
     @property
     def value(self):
@@ -55,13 +59,30 @@ class RegisterInputField(BoxLayout):
 class RegisterRadioField(BoxLayout):
     
     @property
+    def valid(self):
+        for radio_btn in CheckBox.get_widgets(self.name):
+            if radio_btn.state == "down":
+                return True
+    
+    @property
     def value(self):
         for radio_btn in CheckBox.get_widgets(self.name):
             if radio_btn.state == "down":
                 return radio_btn.value
 
 
+class RegisterUsername(BoxLayout):
+    
+    def update(self):
+        first, last, cabin = [w.text for w in self.comp]
+        self.text = first[0] + last + str(cabin)
+
+
 class RegisterPasswordField(BoxLayout):
+    
+    @property
+    def valid(self):
+        return self.ids.input.valid
     
     @property
     def value(self):
@@ -80,10 +101,9 @@ class RegisterScreen(Screen):
     def register(self):
         details = []
         for widget in self.all_input:
-            if type(widget) in (RegisterInputField, RegisterPasswordField):
-                if not widget.ids.input.valid:
-                    MessagePopup(message="Your {} is not valid!".format(widget.name.lower())).open()
-                    return
+            if not widget.valid:
+                MessagePopup(message="Your {} is not valid!".format(widget.name.lower())).open()
+                return
             details.append(widget.value)
         Guest.register(*details)
         self.manager.current = "login"

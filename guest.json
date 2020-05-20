@@ -1,6 +1,6 @@
 {
   "_default": {
-    "11": {
+    "12": {
       "journey": "Kimberley Quest",
       "start": "200520"
     }
@@ -11,10 +11,10 @@
       "hash": "f013b8822e7bbd556e0703ff00e64f6060a1913c7811bf5d4fcc6c9f69c22c9b02b3fef111770e0c759a4c9c9df110c62177b621662c54915a93bceffc2f2496",
       "last": "Smith",
       "first": "Peter",
-      "cabin": "1",
-      "age": "43",
+      "cabin": 1,
+      "age": 43,
       "gender": "M",
-      "notes": "Meat only",
+      "notes": "Vegetarian food only",
       "address": "13 Wallaby Way Port Jackson. NSW.",
       "activities": [
         "No Activity",
@@ -41,7 +41,7 @@
         "Normal meal",
         "Normal meal",
         "Normal meal",
-        "No food",
+        "Normal meal",
         "Normal meal",
         "Normal meal",
         "Normal meal",
@@ -523,14 +523,14 @@
       ]
     },
     "13": {
-      "username": "EJi0",
+      "username": "EJi001",
       "hash": "f013b8822e7bbd556e0703ff00e64f6060a1913c7811bf5d4fcc6c9f69c22c9b02b3fef111770e0c759a4c9c9df110c62177b621662c54915a93bceffc2f2496",
       "last": "Ji",
       "first": "Edward",
-      "cabin": 0,
+      "cabin": 1,
       "age": 17,
-      "gender": "M",
-      "notes": "xxx",
+      "gender": null,
+      "notes": "",
       "address": "Knox",
       "activities": [
         "No Activity",

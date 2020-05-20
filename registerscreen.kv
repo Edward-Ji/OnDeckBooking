@@ -1,6 +1,7 @@
 <RegisterInputField>:
     name: ''
     mark: ''
+    text: input.text
     multiline: False
 
     size_hint: .9, None
@@ -47,6 +48,22 @@
     MainLabel:
         text: "Female"
 
+<RegisterUsername>:
+    text: ''
+
+    size_hint: .9, None
+    height: self.minimum_height
+    pos_hint: {"center_x": .5}
+
+    AlignLabel:  # criteria name
+        size_hint: None, 1
+        width: 120
+        text: "Username"
+
+    RegisterInput:  # username display
+        text: root.text
+        disabled: True
+
 <RegisterPasswordField>
     name: ''
     mark: ''
@@ -84,23 +101,33 @@
 
     MultiField:
         RegisterInputField:
+            id: first
             name: "First name"
             mark: "**"
+            on_text: username.update()
         RegisterInputField:
+            id: last
             name: "Last name"
             mark: "**"
+            on_text: username.update()
 
-    RegisterPasswordField:
-        name: "Password"
-        mark: '*'
+    MultiField:
+        RegisterUsername:
+            id: username
+            comp: first, last, cabin
+        RegisterPasswordField:
+            name: "Password"
+            mark: '*'
 
     MultiField:
         RegisterInputField:
             name: "Age"
             mark: "**"
         RegisterInputField:
+            id: cabin
             name: "Cabin No."
             mark: "**"
+            on_text: username.update()
         RegisterRadioField:
             name: "Gender"
             mark: "**"

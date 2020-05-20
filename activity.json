@@ -70,45 +70,45 @@
     },
     "4": {
       "day": 4,
-      "easy": "Visiting aircraft remains",
-      "moderate": "Individual fishing",
-      "challenging": "Swim in Mozo"
+      "easy": "Glass bottom explorer",
+      "moderate": "Waterfall bath",
+      "challenging": "SCUBA adventure"
     },
     "5": {
       "day": 5,
       "easy": "Glass bottom explorer",
-      "moderate": "Individual fishing",
-      "challenging": "SCUBA adventure"
+      "moderate": "Flying to fishing",
+      "challenging": "Feeding crocodile"
     },
     "6": {
       "day": 6,
       "easy": "Glass bottom explorer",
-      "moderate": "Flying to fishing",
+      "moderate": "Waterfall bath",
       "challenging": "Feeding crocodile"
     },
     "7": {
       "day": 7,
       "easy": "Visiting aircraft remains",
-      "moderate": "Waterfall bath",
-      "challenging": "Swim in Mozo"
+      "moderate": "Flying to fishing",
+      "challenging": "Feeding crocodile"
     },
     "8": {
       "day": 8,
-      "easy": "Visiting aircraft remains",
-      "moderate": "Individual fishing",
-      "challenging": "Feeding crocodile"
+      "easy": "Glass bottom explorer",
+      "moderate": "Waterfall bath",
+      "challenging": "Swim in Mozo"
     },
     "9": {
       "day": 9,
       "easy": "Visiting aircraft remains",
-      "moderate": "Flying to fishing",
-      "challenging": "SCUBA adventure"
+      "moderate": "Individual fishing",
+      "challenging": "Swim in Mozo"
     },
     "10": {
       "day": 10,
       "easy": "Visiting aircraft remains",
-      "moderate": "Flying to fishing",
-      "challenging": "Swim in Mozo"
+      "moderate": "Individual fishing",
+      "challenging": "SCUBA adventure"
     },
     "11": {
       "day": 11,
@@ -118,21 +118,21 @@
     },
     "12": {
       "day": 12,
-      "easy": "Visiting aircraft remains",
-      "moderate": "Individual fishing",
-      "challenging": "SCUBA adventure"
+      "easy": "Glass bottom explorer",
+      "moderate": "Waterfall bath",
+      "challenging": "Swim in Mozo"
     },
     "13": {
       "day": 13,
-      "easy": "Visiting aircraft remains",
-      "moderate": "Individual fishing",
+      "easy": "Glass bottom explorer",
+      "moderate": "Flying to fishing",
       "challenging": "Swim in Mozo"
     },
     "14": {
       "day": 14,
-      "easy": "Visiting aircraft remains",
+      "easy": "Glass bottom explorer",
       "moderate": "Flying to fishing",
-      "challenging": "Feeding crocodile"
+      "challenging": "SCUBA adventure"
     }
   },
   "_default": {}
