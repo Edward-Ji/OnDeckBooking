@@ -4,7 +4,6 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.factory import Factory
 from kivy.graphics import Color, Rectangle
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.uix.label import Label
@@ -17,7 +16,8 @@ from kivy.properties import BooleanProperty, StringProperty
 
 import re
 
-RAPID_CLICK = .35
+RAPID_CLICK_INTERVAL = .35
+PASSWORD_TIMEOUT = 2.5
 
 
 class Cursor:
@@ -48,7 +48,7 @@ class LogoImage(Image):
             self.press_count += 1
             if self.reset:
                 self.reset.cancel()
-            self.reset = Clock.schedule_once(lambda _: setattr(self, "press_count", 0), RAPID_CLICK)
+            self.reset = Clock.schedule_once(lambda _: setattr(self, "press_count", 0), RAPID_CLICK_INTERVAL)
             if 5 <= self.press_count <= 9:
                 MessagePopup(message="Tap {} more time(s) to enter debug mode!".format(10 - self.press_count)).open()
             elif self.press_count == 10:
@@ -57,7 +57,7 @@ class LogoImage(Image):
 
 
 # provoke event upon the start and end of mouse hovering
-class HoverBehavior(ButtonBehavior):
+class HoverWidget(Widget):
 
     hovered_ins = None
     hovered = BooleanProperty(False)
@@ -66,7 +66,7 @@ class HoverBehavior(ButtonBehavior):
         self.register_event_type('on_hover_enter')
         self.register_event_type('on_hover_leave')
         Window.bind(mouse_pos=self.on_mouse_pos)
-        super(HoverBehavior, self).__init__(**kwargs)
+        super(HoverWidget, self).__init__(**kwargs)
 
     @property
     def in_view(self):
@@ -107,7 +107,7 @@ class HoverBehavior(ButtonBehavior):
 
     def on_touch_up(self, touch):
         self.on_hover_leave()
-        return super(HoverBehavior, self).on_touch_up(touch)
+        return super(HoverWidget, self).on_touch_up(touch)
 
 
 # handle widget as rounded during collision event
@@ -128,7 +128,7 @@ class MainLabel(Label):
 
 
 # styled button
-class MainButton(HoverBehavior, Button):
+class MainButton(HoverWidget, Button):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -153,7 +153,7 @@ class MainButton(HoverBehavior, Button):
 
 
 # button displayed in the top bar
-class HeadingButton(RoundedBehavior, HoverBehavior, Button):
+class HeadingButton(RoundedBehavior, HoverWidget, Button):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -176,7 +176,7 @@ class HeadingButton(RoundedBehavior, HoverBehavior, Button):
         Cursor.restore(self)
 
 
-class MainInput(TextInput, HoverBehavior):
+class MainInput(TextInput, HoverWidget):
 
     def insert_text(self, substring, from_undo=False):
         # restrict input length to allowed length
@@ -206,10 +206,11 @@ class PasswordEye(ToggleButton):
 
     def on_state(self, instance, value):
         # automatically hide password two seconds after showing password
-        if self.state == "down":
-            if self.schedule_hide:
+        if value == "down":
+            if instance.schedule_hide:
                 self.schedule_hide.cancel()
-            self.schedule_hide = Clock.schedule_once(lambda _: setattr(self, "state", "normal"), 2)
+            self.schedule_hide = Clock.schedule_once(lambda _: setattr(self, "state", "normal"),
+                                                     PASSWORD_TIMEOUT)
 
 
 # styled popup
@@ -283,4 +284,4 @@ class MessagePopup(ModalView):
 
 
 Factory.register("RoundedWidget", RoundedBehavior)
-Factory.register("HoverBehavior", HoverBehavior)
+Factory.register("HoverBehavior", HoverWidget)

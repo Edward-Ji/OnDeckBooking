@@ -1,11 +1,12 @@
 import binascii
-from datetime import date, datetime
+from datetime import datetime
 import hashlib
 import os
 from tinydb import TinyDB, Query
 
 # constant variables
 SALT = b"sr0te2eQ20Klubmyie"
+
 ACTIVITY_IMG_DIR = "res/activity_img"
 UNKNOWN_ACTIVITY_IMG = "activity_unknown.png"
 MEAL_IMG_DIR = "res/meal_img"
@@ -55,9 +56,8 @@ def get_day():
 
 
 class Activity:
-
     BOOK_AHEAD = 3
-
+    
     def __init__(self, **kwargs):
         self.name = kwargs.pop("name")
         self.rating = kwargs.pop("rating")
@@ -65,20 +65,20 @@ class Activity:
         self.price = kwargs.pop("price")
         if "day" in kwargs:
             self.day = kwargs.pop("day")
-
+    
     @property
     def img(self):
         return find_img(self.name, ACTIVITY_IMG_DIR)
-
+    
     @classmethod
     def no_activity(cls):
         return cls(**NO_ACTIVITY)
-
+    
     @classmethod
     def find(cls, name):
         details = tb_details.get(query.name == name)
         return cls(**details)
-
+    
     @classmethod
     def on_day(cls, day):
         # return the activities available for given day
@@ -93,17 +93,19 @@ class Activity:
 
 
 class Meal:
-
+    
+    normal = "Normal meal"
+    
     def __init__(self, **kwargs):
         self.name = kwargs.pop("name")
         self.desc = kwargs.pop("desc")
         if "day" in kwargs:
             self.day = kwargs.pop("day")
-
+    
     @property
     def img(self):
         return find_img(self.name, MEAL_IMG_DIR)
-
+    
     @classmethod
     def load(cls):
         for info in db_meal.all():
@@ -111,14 +113,33 @@ class Meal:
 
 
 class Guest:
-
     logged_in = ''
-
+    
     @staticmethod
     def find(username):
         # return dictionary of user profiles that match the username
         return tb_profiles.search(query.username == username)
-
+    
+    @classmethod
+    def register(cls, first, last, psw, age, cabin, gender, notes, address):
+        username = first[0] + last + str(cabin)
+        hashed = hash_psw(psw)
+        bookings = [Activity.no_activity().name for _ in range(14)]
+        meals = [Meal.normal for _ in range(14)]
+        tb_profiles.insert({
+            "username": username,
+            "hash": hashed,
+            "last": last,
+            "first": first,
+            "cabin": int(cabin),
+            "age": int(age),
+            "gender": gender,
+            "notes": notes,
+            "address": address,
+            "activities": bookings,
+            "meals": meals
+        })
+    
     @classmethod
     def login(cls, usr, psw):
         found = cls.find(usr)
@@ -131,7 +152,7 @@ class Guest:
                 return
             else:
                 return "Incorrect password!"
-
+    
     @classmethod
     def change_psw(cls, ori_psw, new_psw):
         ori_hash = cls.get_profile("hash")
@@ -143,43 +164,44 @@ class Guest:
             return "You new password is too short!"
         else:
             cls.set_profile("hash", hash_psw(new_psw))
-
+    
     @classmethod
     def logout(cls):
         cls.logged_in = None
-
+    
     @classmethod
     def get_profile(cls, criteria):
         # get given criteria from profile of logged-in user
         profile = tb_profiles.get(query.username == cls.logged_in)
         return profile[criteria]
-
+    
     @classmethod
     def set_profile(cls, criteria, value):
         # update given criteria in profile of logged-in user
         tb_profiles.update({criteria: value}, query.username == cls.logged_in)
         if criteria == "username":
             cls.logged_in = value
-
+    
     @classmethod
     def get_booked(cls, criteria, day):
         # get the name of booked activity on given day
         bookings = cls.get_profile(criteria)
-        return bookings[day-1]
-
+        return bookings[day - 1]
+    
     @classmethod
     def book_activity(cls, criteria, day, item):
         # update activity booking
         if not cls.logged_in:
             return
-
+        
         def update_booking(d, a):  # change given day of booking list criteria
             def transform(doc):
-                doc[criteria][d-1] = a  # criteria could be activity or meal
+                doc[criteria][d - 1] = a  # criteria could be activity or meal
+            
             return transform
-
+        
         tb_profiles.update(update_booking(day, item), query.username == cls.logged_in)
-
+    
     @classmethod
     def costs(cls):
         # return sum of all activity costs

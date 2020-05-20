@@ -1,5 +1,6 @@
 from kivy.animation import Animation
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import CardTransition
@@ -23,6 +24,12 @@ class LoginField(BoxLayout):
             root = App.get_running_app().root  # main screen manager
             root.transition = CardTransition(direction="up", mode="pop")
             root.current = "menu"
+            
+    @staticmethod
+    def register():
+        root = App.get_running_app().root  # main screen manager
+        root.transition = CardTransition(direction="up", mode="pop")
+        root.current = "register"
 
 
 class CruiseImage(Image):
@@ -32,6 +39,6 @@ class CruiseImage(Image):
         self.play()
 
     def play(self):
-        self.pos = 150, 400
-        animation = Animation(pos=(-175, 150), t="out_quad", duration=3)
-        animation.start(self)
+        self.pos = 150, 450
+        animation = Animation(pos=(-200, 175), t="out_quad", duration=3)
+        Clock.schedule_once(lambda _: animation.start(self), 1)

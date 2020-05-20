@@ -1,0 +1,151 @@
+<RegisterInputField>:
+    name: ''
+    mark: ''
+    multiline: False
+
+    size_hint: .9, None
+    height: self.minimum_height
+    pos_hint: {"center_x": .5}
+
+    AlignLabel:  # criteria name
+        size_hint: None, 1
+        width: 120
+        text: root.name + root.mark
+
+    RegisterInput:  # criteria input box
+        id: input
+        name: root.name
+
+        height: 84 if root.multiline else 42
+        multiline: root.multiline
+
+<RegisterRadioField>:
+    name: ''
+    mark: ''
+
+    size_hint: 1.8, None
+    height: self.minimum_height
+    pos_hint: {"center_x": .5, "center_y": .5}
+
+    AlignLabel:  # criteria name
+        size_hint: None, 1
+        width: 120
+        text: root.name + root.mark
+
+    CheckBox:
+        value: 'M'
+        group: root.name
+        state: "down"
+        color: orange
+    MainLabel:
+        text: "Male"
+
+    CheckBox:
+        value: 'F'
+        group: root.name
+        color: orange
+    MainLabel:
+        text: "Female"
+
+<RegisterPasswordField>
+    name: ''
+    mark: ''
+
+    size_hint: .9, None
+    height: self.minimum_height
+    pos_hint: {"center_x": .5}
+
+    AlignLabel:  # criteria name
+        size_hint: None, 1
+        width: 120
+        text: root.name + root.mark
+
+    RegisterInput:
+        id: input
+        name: root.name
+
+        height: 42
+        password: True
+
+    PasswordEye:
+        on_state: input.password = self.state == "normal"
+
+<MultiField@BoxLayout>
+    size_hint: .9, None
+    height: self.minimum_height
+    pos_hint: {"center_x": .5}
+
+<RegisterField@BoxLayout>
+    orientation: "vertical"
+    padding: 24
+    spacing: 10
+    size_hint_y: None
+    height: self.minimum_height
+
+    MultiField:
+        RegisterInputField:
+            name: "First name"
+            mark: "**"
+        RegisterInputField:
+            name: "Last name"
+            mark: "**"
+
+    RegisterPasswordField:
+        name: "Password"
+        mark: '*'
+
+    MultiField:
+        RegisterInputField:
+            name: "Age"
+            mark: "**"
+        RegisterInputField:
+            name: "Cabin No."
+            mark: "**"
+        RegisterRadioField:
+            name: "Gender"
+            mark: "**"
+
+    RegisterInputField:
+        name: "Notes"
+        multiline: True
+
+    RegisterInputField:
+        name: "Address"
+        multiline: True
+        mark: '*'
+
+<RegisterButton@MainButton>:
+    size_hint_x: 1
+    pos_hint: {"center_x": .5}
+    text: "Register"
+
+<RegisterScreen@Screen>:
+    name: "register"
+
+    BoxLayout:
+        orientation: "vertical"
+
+        MainBanner:  # top bar
+            MainHeading:
+                heading: "Register"
+            HeadingButton:
+                name: "login"
+                on_release: root.to_menu()
+
+        MainScrollView:
+            RegisterField:
+                id: field
+
+        MainLabel:  # notice
+            padding: 10, 10
+            text_size: root.width, None
+            size: self.texture_size
+            text:
+                "* required\n"\
+                "** required and can not be modified after registration\n"\
+                "Please ensure that all details are correct."
+
+        RegisterButton:
+            on_release: root.register()
+
+

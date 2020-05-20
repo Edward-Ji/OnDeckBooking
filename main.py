@@ -9,6 +9,7 @@ from loginscreen import *
 from menuscreen import *
 from costscreen import *
 from profilescreen import *
+from registerscreen import *
 from debugscreen import *
 
 from guest import *
@@ -27,6 +28,7 @@ Builder.load_file("loginscreen.kv")
 Builder.load_file("menuscreen.kv")
 Builder.load_file("costscreen.kv")
 Builder.load_file("profilescreen.kv")
+Builder.load_file("registerscreen.kv")
 Builder.load_file("debugscreen.kv")
 
 
