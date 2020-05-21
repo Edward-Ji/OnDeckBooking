@@ -35,6 +35,8 @@ class CalendarActivityButton(MainButton):
         # handle unavailable situations
         if self.day <= Activity.BOOK_AHEAD:
             MessagePopup(message="There are no activities available for the first three days.").open()
+        elif self.day < get_day():
+            MessagePopup(message="You can not book activities for days before!").open()
         elif self.day < get_day() + Activity.BOOK_AHEAD:
             MessagePopup(message="You need to book activities at least three days ahead!").open()
         else:

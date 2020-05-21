@@ -1,3 +1,5 @@
+from kivy.app import App
+
 import binascii
 from datetime import datetime
 import hashlib
@@ -7,9 +9,9 @@ from tinydb import TinyDB, Query
 # constant variables
 SALT = b"sr0te2eQ20Klubmyie"
 
-ACTIVITY_IMG_DIR = "res/activity_img"
-UNKNOWN_ACTIVITY_IMG = "activity_unknown.png"
-MEAL_IMG_DIR = "res/meal_img"
+ACTIVITY_IMG_DIR = os.path.join("res", "activity_img")
+UNKNOWN_ACTIVITY_IMG = os.path.join("activity_unknown.png")
+MEAL_IMG_DIR = os.path.join("res", "meal_img")
 
 NO_ACTIVITY = {"name": "No Activity",
                "rating": "easy",
@@ -116,18 +118,21 @@ class Guest:
     logged_in = ''
     
     @staticmethod
+    def username(first, last, cabin):
+        return first[:1] + last + str(cabin)
+    
+    @staticmethod
     def find(username):
         # return dictionary of user profiles that match the username
         return tb_profiles.search(query.username == username)
     
     @classmethod
-    def register(cls, first, last, psw, age, cabin, gender, notes, address):
-        username = first[0] + last + str(cabin)
+    def register(cls, first, last, usr, psw, age, cabin, gender, notes, address):
         hashed = hash_psw(psw)
         bookings = [Activity.no_activity().name for _ in range(14)]
         meals = [Meal.normal for _ in range(14)]
         tb_profiles.insert({
-            "username": username,
+            "username": usr,
             "hash": hashed,
             "last": last,
             "first": first,

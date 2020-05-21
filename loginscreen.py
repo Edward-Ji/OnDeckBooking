@@ -28,7 +28,7 @@ class LoginField(BoxLayout):
     @staticmethod
     def register():
         root = App.get_running_app().root  # main screen manager
-        root.transition = CardTransition(direction="up", mode="pop")
+        root.transition = CardTransition(direction="up", mode="push")
         root.current = "register"
 
 

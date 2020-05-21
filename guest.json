@@ -1,8 +1,8 @@
 {
   "_default": {
-    "12": {
+    "15": {
       "journey": "Kimberley Quest",
-      "start": "200520"
+      "start": "210520"
     }
   },
   "profiles": {
@@ -20,7 +20,7 @@
         "No Activity",
         "No Activity",
         "No Activity",
-        "No Activity",
+        "SCUBA adventure",
         "No Activity",
         "No Activity",
         "No Activity",
@@ -489,49 +489,6 @@
       "gender": "M",
       "notes": "Vegetarian food only",
       "address": "5-2-1 Ginza Chou-ku Tokyo 170-3293",
-      "activities": [
-        "No Activity",
-        "No Activity",
-        "No Activity",
-        "No Activity",
-        "No Activity",
-        "No Activity",
-        "No Activity",
-        "No Activity",
-        "No Activity",
-        "No Activity",
-        "No Activity",
-        "No Activity",
-        "No Activity",
-        "No Activity"
-      ],
-      "meals": [
-        "Normal meal",
-        "Normal meal",
-        "Normal meal",
-        "Normal meal",
-        "Normal meal",
-        "Normal meal",
-        "Normal meal",
-        "Normal meal",
-        "Normal meal",
-        "Normal meal",
-        "Normal meal",
-        "Normal meal",
-        "Normal meal",
-        "Normal meal"
-      ]
-    },
-    "13": {
-      "username": "EJi001",
-      "hash": "f013b8822e7bbd556e0703ff00e64f6060a1913c7811bf5d4fcc6c9f69c22c9b02b3fef111770e0c759a4c9c9df110c62177b621662c54915a93bceffc2f2496",
-      "last": "Ji",
-      "first": "Edward",
-      "cabin": 1,
-      "age": 17,
-      "gender": null,
-      "notes": "",
-      "address": "Knox",
       "activities": [
         "No Activity",
         "No Activity",

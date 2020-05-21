@@ -134,7 +134,7 @@
                 id: ori_psw_input
 
             PasswordEye:
-                on_state: new_psw_input.password = self.state == "normal"
+                on_state: ori_psw_input.password = self.state == "normal"
 
         # new password input
         MainLabel:

@@ -1,7 +1,6 @@
 <RegisterInputField>:
     name: ''
     mark: ''
-    text: input.text
     multiline: False
 
     size_hint: .9, None
@@ -10,7 +9,7 @@
 
     AlignLabel:  # criteria name
         size_hint: None, 1
-        width: 120
+        width: 132
         text: root.name + root.mark
 
     RegisterInput:  # criteria input box
@@ -30,25 +29,28 @@
 
     AlignLabel:  # criteria name
         size_hint: None, 1
-        width: 120
+        width: 132
         text: root.name + root.mark
 
     CheckBox:
         value: 'M'
+        allow_no_selection: False
         group: root.name
-        state: "down"
         color: orange
     MainLabel:
         text: "Male"
 
     CheckBox:
         value: 'F'
+        allow_no_selection: False
         group: root.name
         color: orange
     MainLabel:
         text: "Female"
 
-<RegisterUsername>:
+<RegisterUsernameField>:
+    name: ''
+    mark: '**'
     text: ''
 
     size_hint: .9, None
@@ -57,16 +59,18 @@
 
     AlignLabel:  # criteria name
         size_hint: None, 1
-        width: 120
-        text: "Username"
+        width: 132
+        text: root.name + root.mark
 
     RegisterInput:  # username display
-        text: root.text
-        disabled: True
+        id: input
+        name: root.name
+
+        height: 42
 
 <RegisterPasswordField>
     name: ''
-    mark: ''
+    mark: '*'
 
     size_hint: .9, None
     height: self.minimum_height
@@ -74,7 +78,7 @@
 
     AlignLabel:  # criteria name
         size_hint: None, 1
-        width: 120
+        width: 132
         text: root.name + root.mark
 
     RegisterInput:
@@ -101,33 +105,25 @@
 
     MultiField:
         RegisterInputField:
-            id: first
             name: "First name"
             mark: "**"
-            on_text: username.update()
         RegisterInputField:
-            id: last
             name: "Last name"
             mark: "**"
-            on_text: username.update()
 
     MultiField:
-        RegisterUsername:
-            id: username
-            comp: first, last, cabin
+        RegisterUsernameField:
+            name: "Username"
         RegisterPasswordField:
             name: "Password"
-            mark: '*'
 
     MultiField:
         RegisterInputField:
             name: "Age"
             mark: "**"
         RegisterInputField:
-            id: cabin
             name: "Cabin No."
             mark: "**"
-            on_text: username.update()
         RegisterRadioField:
             name: "Gender"
             mark: "**"
@@ -146,7 +142,7 @@
     pos_hint: {"center_x": .5}
     text: "Register"
 
-<RegisterScreen@Screen>:
+<RegisterScreen>:
     name: "register"
 
     BoxLayout:
@@ -157,7 +153,7 @@
                 heading: "Register"
             HeadingButton:
                 name: "login"
-                on_release: root.to_menu()
+                on_release: root.to_login()
 
         MainScrollView:
             RegisterField:

@@ -31,6 +31,7 @@ class ReceiptBlock(BoxLayout):
     def _cancel(self):
         Guest.book_activity("activities", self.day, Activity.no_activity().name)
         self.parent.remove_widget(self)
+        ReceiptLayout.single.total -= self.price
         MessagePopup(message="This activity is cancelled!")
         
     def cancel(self):

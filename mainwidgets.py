@@ -213,6 +213,18 @@ class PasswordEye(ToggleButton):
                                                      PASSWORD_TIMEOUT)
 
 
+# close button on top right of popup
+class PopupCloseButton(RoundedBehavior, HoverWidget, Button):
+    
+    def on_hover_enter(self):
+        # set cursor icon to hand
+        Cursor.change(self, "hand")
+    
+    def on_hover_leave(self):
+        # restore cursor icon back to arrow
+        Cursor.restore(self)
+
+
 # styled popup
 class MainPopup(Popup):
     pass
