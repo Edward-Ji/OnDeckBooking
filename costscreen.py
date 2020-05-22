@@ -13,7 +13,7 @@ class ReceiptCancelButton(MainButton):
     
     def on_release(self):
         if self.unavailable:
-            MessagePopup(message="This activity has already finished!").open()
+            MessagePopup(message="You can not cancel this activity!").open()
         else:
             self.parent.parent.cancel()
 

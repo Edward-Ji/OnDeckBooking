@@ -95,12 +95,14 @@
             readonly: True
 
     ProfileInput:
-        name: "Notes"
+        allowed_pat: r"[\w,. ]*"
+        name: "Address"
         multiline: True
 
     ProfileInput:
-        name: "Address"
+        name: "Notes"
         multiline: True
+
 
 <UpdateButton@MainButton>:
     size_hint_x: 1
@@ -134,7 +136,7 @@
                 id: ori_psw_input
 
             PasswordEye:
-                on_state: ori_psw_input.password = self.state == "normal"
+                target: ori_psw_input
 
         # new password input
         MainLabel:
@@ -151,7 +153,7 @@
                 id: new_psw_input
 
             PasswordEye:
-                on_state: new_psw_input.password = self.state == "normal"
+                target: new_psw_input
 
         MainButton:
             pos_hint: {"center_x": .5}
@@ -170,19 +172,13 @@
             HeadingButton:
                 name: "menu"
                 on_release: root.to_menu()
+            HelpButton:
+                screen: root.name
 
         MainScrollView:
             # scrollable profile fields so that the save button always remain visible
             ProfileField:
                 id: field
-
-        MainLabel:  # notice
-            padding: 10, 10
-            text_size: root.width, None
-            size: self.texture_size
-            text:
-                "If you believe that any of the information in the read-only sections is incorrect, "\
-                "feel free to contact any crew member."
 
         UpdateButton:
             on_release: root.update_profile()

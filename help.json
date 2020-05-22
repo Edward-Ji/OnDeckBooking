@@ -1,0 +1,42 @@
+{
+  "_default": {
+    "1": {
+      "screen": "menu",
+      "content":[
+        "In the top bar, you can access other functions including receipt, profile, logout and this help function. ",
+        "Below the top bar, you can see a calendar. ",
+        "The activity and meal booked is displayed for each day. ",
+        "Click on the buttons will provoke a popup in which you are able to change your booking. ",
+        "Be reminded that activity bookings need to be made three days prior. ",
+        "Activities are rated with three difficulty levels. ",
+        "Caution is suggested when choosing activities that are beyond your ability"
+      ]
+    },
+    "2": {
+      "screen": "cost",
+      "content":[
+        "All your activity bookings will be listed here with its cost. ",
+        "There is a shortcut for cancelling activities. ",
+        "However, please remember that bookings need to be made three days prior. "
+      ]
+    },
+    "3": {
+      "screen": "profile",
+      "content":[
+        "This screen contains your important information. ",
+        "You are able to change some criteria, including your password. ",
+        "If you believe that any of readonly information is incorrect, feel free to contact our crew member. ",
+        "Please update your address and special notes frequently so we can provide better services. "
+      ]
+    },
+    "4": {
+      "screen": "register",
+      "content":[
+        "You can register your account in this screen. ",
+        "The criteria marked with one asteroid (*) is required. ",
+        "The criteria marked with two asteroids (**) is required and can not be modified after registration! ",
+        "So, please ensure that all details are correct. "
+      ]
+    }
+  }
+}

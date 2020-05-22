@@ -1,7 +1,7 @@
 <ReceiptCancelButton>:
     color_normal: grey if self.unavailable else orange
     color_down: grey_down if self.unavailable else orange_down
-    text: "Finished" if self.unavailable else "Cancel"
+    text: "Cancel"
     pos_hint: {"center_y": .5}
 
 <ReceiptBlock>:
@@ -74,6 +74,8 @@
             HeadingButton:
                 name: "menu"
                 on_release: root.manager.current = "menu"
+            HelpButton:
+                screen: root.name
 
         BoxLayout:  # titles of the receipt table
             size_hint_y: None

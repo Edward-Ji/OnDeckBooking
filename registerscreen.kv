@@ -89,7 +89,7 @@
         password: True
 
     PasswordEye:
-        on_state: input.password = self.state == "normal"
+        target: input
 
 <MultiField@BoxLayout>
     size_hint: .9, None
@@ -129,13 +129,13 @@
             mark: "**"
 
     RegisterInputField:
-        name: "Notes"
-        multiline: True
-
-    RegisterInputField:
         name: "Address"
         multiline: True
         mark: '*'
+
+    RegisterInputField:
+        name: "Notes"
+        multiline: True
 
 <RegisterButton@MainButton>:
     size_hint_x: 1
@@ -154,19 +154,12 @@
             HeadingButton:
                 name: "login"
                 on_release: root.to_login()
+            HelpButton:
+                screen: root.name
 
         MainScrollView:
             RegisterField:
                 id: field
-
-        MainLabel:  # notice
-            padding: 10, 10
-            text_size: root.width, None
-            size: self.texture_size
-            text:
-                "* required\n"\
-                "** required and can not be modified after registration\n"\
-                "Please ensure that all details are correct."
 
         RegisterButton:
             on_release: root.register()

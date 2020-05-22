@@ -27,7 +27,7 @@ error_msg = {
     "Password": "Password must contain at least 6 characters!",
     "Age": "Age must be an integer no more than three digits!",
     "Cabin No.": "Cabin number must be a 1-to-3-digit number!",
-    "Address": "Address can not be empty!",
+    "Address": "Address is required and can not contain special characters!",
     "Notes": ''
 }
 

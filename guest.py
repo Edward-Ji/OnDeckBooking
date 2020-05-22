@@ -127,7 +127,7 @@ class Guest:
         return tb_profiles.search(query.username == username)
     
     @classmethod
-    def register(cls, first, last, usr, psw, age, cabin, gender, notes, address):
+    def register(cls, first, last, usr, psw, age, cabin, gender, address, notes):
         hashed = hash_psw(psw)
         bookings = [Activity.no_activity().name for _ in range(14)]
         meals = [Meal.normal for _ in range(14)]
