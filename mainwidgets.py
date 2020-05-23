@@ -220,19 +220,43 @@ class MainInput(TextInput, HoverWidget):
 
 
 # toggle show and hide password in input box
-class PasswordEye(ToggleButton):
+class PasswordEye(HoverWidget, ToggleButton):
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.schedule_hide = None
+        self.hint = None
+        
+    @property
+    def hint_text(self):
+        return "show" if self.state == "normal" else "hide"
+
+    def on_hover_enter(self):
+        # show function of button when mouse hovers
+        self.hint = Label(text=self.hint_text,
+                          color=(.3, .3, .3, 1),
+                          center=(self.center_x, self.y - 6))
+        self.add_widget(self.hint)
+
+    def on_hover_leave(self):
+        # restore button when mouse leaves
+        if self.hint:
+            self.remove_widget(self.hint)
+            self.hint = None
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             # prevent de-focus on text inputs
             FocusBehavior.ignored_touch.append(touch)
         return super().on_touch_down(touch)
+    
+    def on_touch_up(self, touch):
+        return ToggleButton.on_touch_up(self, touch)
 
     def on_state(self, instance, value):
+        if self.hint:
+            self.hint.text = self.hint_text
+        
         # change target input password state
         self.target.password = value == "normal"
         self.target.focus = True
