@@ -1,11 +1,10 @@
-from kivy.graphics import Color, Line
 from kivy.uix.behaviors.togglebutton import ToggleButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import CardTransition, Screen
 from kivy.properties import BooleanProperty
 
-from mainwidgets import HoverWidget, MainButton, MainPopup, MainScrollView, SelectionPopup, MessagePopup
+from mainwidgets import HoverWidget, MainButton, MainPopup, SelectionPopup, MessagePopup
 
 from guest import *
 
@@ -52,15 +51,10 @@ class ActivityToggleBehavior(ToggleButtonBehavior):
     last = []
 
     def on_state(self, instance, value):
-        print("state", instance, value)
         if value == "down":
             self.last.append(self)
         if len(self.last) > 2:
             self.last.pop(0)
-
-    def on_hover_enter(self):
-        if self.state == "normal":
-            super().on_hover_enter()
 
     # allow regression when booking challenge activity
     @classmethod
@@ -81,20 +75,17 @@ class ActivityBlock(HoverWidget, ActivityToggleBehavior, BoxLayout, Activity):
         
     def on_hover_enter(self):
         if self.state == "normal":
-            self.border_color = .4, .4, .4, 1
+            self.border_color = .45, .45, .45, 1
     
     def on_hover_leave(self):
         if self.state == "normal":
             self.border_color = 0, 0, 0, 0
-
-    def on_touch_up(self, touch):
-        pass
     
     def on_state(self, instance, value):
         super().on_state(instance, value)
         # update graphics
         if self.state == "down":
-            self.border_color = 1, .45, .1, 1
+            self.border_color = 1, .48, .15, 1
         else:
             self.border_color = 0, 0, 0, 0
 
@@ -129,13 +120,11 @@ class ActivityLayout(BoxLayout):
         # instantiate all activity available on the day
         for rating, activity in Activity.on_day(day=day).items():
             # add day to instance for future update to database
-            # scroll_view = MainScrollView()
             self.add_widget(ActivityBlock(name=activity.name,
-                                                 rating=activity.rating,
-                                                 desc=activity.desc,
-                                                 price=activity.price,
-                                                 day=day))
-            # self.add_widget(scroll_view)
+                                          rating=activity.rating,
+                                          desc=activity.desc,
+                                          price=activity.price,
+                                          day=day))
 
 
 class ActivityPicker(MainPopup):
@@ -154,13 +143,7 @@ class ActivityPicker(MainPopup):
 
 
 """
-Above are activity booking widgets.
 Below are meal booking widgets.
-These parts of the program wasn't perfectly planned,
- so their common grounds are not integrated.
-Meal booking widgets are altered code of activity booking widgets,
- so the basic logic and interface is similar.
-For this reason, comments are neglected for meal booking widgets.
 """
 
 
@@ -185,29 +168,29 @@ class CalendarMealButton(MainButton):
             popup.open()
 
 
-class MealPickButton(MainButton, ToggleButtonBehavior):
-
-    last = []
-
-    def on_state(self, instance, value):
-        if value == "down":
-            MealPickButton.last.append(self)
-        if len(MealPickButton.last) > 2:
-            MealPickButton.last.pop(0)
-
-    def on_hover_enter(self):
-        if self.state == "normal":
-            super().on_hover_enter()
-
-
-class MealBlock(BoxLayout, Meal):
+class MealBlock(ToggleButtonBehavior, HoverWidget, BoxLayout, Meal):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        pick_btn = self.ids.pick_btn
         if Guest.get_booked("meals", self.day) == self.name:
-            pick_btn.state = "down"
-        pick_btn.bind(state=self.update)
+            self.state = "down"
+        self.bind(state=self.update)
+
+    def on_hover_enter(self):
+        if self.state == "normal":
+            self.border_color = .45, .45, .45, 1
+        
+
+    def on_hover_leave(self):
+        if self.state == "normal":
+            self.border_color = 0, 0, 0, 0
+
+    def on_state(self, instance, value):
+        # update graphics
+        if self.state == "down":
+            self.border_color = 1, .48, .15, 1
+        else:
+            self.border_color = 0, 0, 0, 0
 
     def update(self, instance, value):
         if value == "down":

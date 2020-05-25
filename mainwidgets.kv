@@ -4,12 +4,12 @@
 # color palette
 #:set white 1, 1, 1, 1
 #:set grey_light .8, .8, .8, 1
-#:set grey .4, .4, .4, 1
-#:set grey_down .4, .4, .4, .8
+#:set grey .45, .45, .45, 1
+#:set grey_down .45, .45, .45, .8
 #:set grey_dark .1, .1, .1, 1
 #:set grey_trans 0, 0, 0, .7
-#:set orange 1, .45, .1, 1
-#:set orange_down 1, .45, .1, .9
+#:set orange 1, .48, .15, 1
+#:set orange_down 1, .48, .15, .9
 #:set orange_trans 1, .45, .1, .5
 #:set transparent 0, 0, 0, 0
 
@@ -21,13 +21,12 @@
 
 # background of top bar
 <MainBanner@BoxLayout>:
-    color: .4, .4, .4, 1
     canvas.before:
         Color:
-            rgba: self.color
+            rgba: grey
         Rectangle:
-            size: root.width, self.height
-            pos: self.pos
+            size: root.width, root.height
+            pos: root.pos
 
     size_hint: 1, None
     height: self.minimum_height
@@ -38,6 +37,7 @@
 
 # styled label
 <MainLabel>:
+    markup: True
     font_size: "20dp"
     color: grey
     size_hint: None, None

@@ -34,7 +34,7 @@ error_msg = {
 
 class RegisterInput(MainInput):
     
-    bg_color_valid = (.4, .4, .4, 1)
+    bg_color_valid = (.45, .45, .45, 1)
     bg_color_invalid = (1, .27, .27, 1)
     
     @property

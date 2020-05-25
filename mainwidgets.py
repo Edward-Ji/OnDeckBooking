@@ -110,6 +110,7 @@ class HoverWidget(Widget):
     
     def on_touch_up(self, touch):
         self.on_hover_leave()
+        self.hovered = False
         return super(HoverWidget, self).on_touch_up(touch)
 
 
