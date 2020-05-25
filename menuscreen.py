@@ -1,10 +1,11 @@
+from kivy.graphics import Color, Line
+from kivy.uix.behaviors.togglebutton import ToggleButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import CardTransition, Screen
-from kivy.uix.behaviors.togglebutton import ToggleButtonBehavior
 from kivy.properties import BooleanProperty
 
-from mainwidgets import MainButton, MainPopup, SelectionPopup, MessagePopup
+from mainwidgets import HoverWidget, MainButton, MainPopup, MainScrollView, SelectionPopup, MessagePopup
 
 from guest import *
 
@@ -46,15 +47,16 @@ class CalendarActivityButton(MainButton):
             activity_picker.open()
 
 
-class ActivityPickButton(MainButton, ToggleButtonBehavior):
+class ActivityToggleBehavior(ToggleButtonBehavior):
 
     last = []
 
     def on_state(self, instance, value):
+        print("state", instance, value)
         if value == "down":
-            ActivityPickButton.last.append(self)
-        if len(ActivityPickButton.last) > 2:
-            ActivityPickButton.last.pop(0)
+            self.last.append(self)
+        if len(self.last) > 2:
+            self.last.pop(0)
 
     def on_hover_enter(self):
         if self.state == "normal":
@@ -69,16 +71,33 @@ class ActivityPickButton(MainButton, ToggleButtonBehavior):
         MessagePopup(message="Booking abandoned!").open()
 
 
-class ActivityBlock(BoxLayout, Activity):
+class ActivityBlock(HoverWidget, ActivityToggleBehavior, BoxLayout, Activity):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        pick_btn = self.ids.pick_btn
         if Guest.get_booked("activities", self.day) == self.name:
-            pick_btn.state = "down"
-        pick_btn.bind(state=self.update)
+            self.state = "down"
+        self.bind(state=self.update)
+        
+    def on_hover_enter(self):
+        if self.state == "normal":
+            self.border_color = .4, .4, .4, 1
+    
+    def on_hover_leave(self):
+        if self.state == "normal":
+            self.border_color = 0, 0, 0, 0
 
-    # allow regression when booking challenging activity
+    def on_touch_up(self, touch):
+        pass
+    
+    def on_state(self, instance, value):
+        super().on_state(instance, value)
+        # update graphics
+        if self.state == "down":
+            self.border_color = 1, .45, .1, 1
+        else:
+            self.border_color = 0, 0, 0, 0
+
     def _update(self, *args):
         # update activity booking database
         Guest.book_activity("activities", self.day, self.name)
@@ -86,6 +105,7 @@ class ActivityBlock(BoxLayout, Activity):
 
     def update(self, instance, value):
         if value == "down":
+            # allow regression when booking challenging activity
             if self.rating == "challenging":
                 # ask when booking activity rated as challenging
                 popup = SelectionPopup(title="Warning",
@@ -109,11 +129,13 @@ class ActivityLayout(BoxLayout):
         # instantiate all activity available on the day
         for rating, activity in Activity.on_day(day=day).items():
             # add day to instance for future update to database
+            # scroll_view = MainScrollView()
             self.add_widget(ActivityBlock(name=activity.name,
-                                          rating=activity.rating,
-                                          desc=activity.desc,
-                                          price=activity.price,
-                                          day=day))
+                                                 rating=activity.rating,
+                                                 desc=activity.desc,
+                                                 price=activity.price,
+                                                 day=day))
+            # self.add_widget(scroll_view)
 
 
 class ActivityPicker(MainPopup):

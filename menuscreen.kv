@@ -6,66 +6,60 @@
     text_size: root.width - 10, None  # wrap text at a certain width
 
 # activity booking toggle button
-<ActivityPickButton>:
+<ActivityToggleBehavior>:
     group: "activity_picker"
     allow_no_selection: False  # no activity is included as an option
-    background_color: grey_light if self.state == "normal" else grey
-    text: "Book..." if self.state == "normal" else "Booked"
-    color: grey_dark
 
 # full block with all information and booking toggle for one activity
 <ActivityBlock>:
     orientation: "vertical"
+    padding: 3
+    size_hint: 1, 1
     size_hint_max_x: 275
+    border_color: 0, 0, 0, 0
 
-    # all information labels are scrollable
-    # while booking toggle remains at bottom
-    MainScrollView:
-        BoxLayout:
-            orientation: "vertical"
-            size_hint_y: None
-            height: self.minimum_height
+    canvas:
+        Color:
+            rgba: root.border_color
+        Line:
+            rectangle: (*root.pos, *root.size)
+            width: 1.5
 
-            Image:
-                size_hint: None, None
-                width: root.width
-                # for horizontal alignment of images across all blocks
-                height: self.width
-                source: root.img
+    Image:
+        size_hint_y: None
+        # for horizontal alignment of images across all blocks
+        height: self.width
+        source: root.img
 
-            MainLabel:  # activity name label
-                text_size: root.width, None  # wrap at certain width
-                size: self.texture_size
-                text: root.name
-                color: white
+    MainLabel:  # activity name label
+        text_size: None, None  # wrap at certain width
+        size: self.texture_size
+        text: root.name
+        color: white
 
-            MainLabel:  # activity rating label
-                pos_hint: {"center_x": .5}
-                height: self.texture_size[1]
-                text: "Rating: " + root.rating
-                font_size: "18dp"
-                color: grey_light
-
-            MainLabel:  # activity description label
-                text_size: root.width, None  # wrap at certain width
-                size: self.texture_size
-                text: root.desc
-                font_size: 15
-                color: grey_light
-
-            MainLabel:  # activity price label
-                pos_hint: {"center_x": .5}
-                text: "Price: ${:.2f}".format(root.price)
-                color: grey_light
-
-    ActivityPickButton:  # activity booking toggle
-        id: pick_btn
-        name: root.name
+    MainLabel:  # activity rating label
         pos_hint: {"center_x": .5}
+        height: self.texture_size[1]
+        text: "Rating: " + root.rating
+        font_size: "18dp"
+        color: grey_light
+
+    AlignLabel:  # activity description label
+        text_size: None, None  # wrap at certain width
+        size_hint_y: 1
+        valign: "top"
+        text: root.desc
+        font_size: 15
+        color: grey_light
+
+    MainLabel:  # activity price label
+        pos_hint: {"center_x": .5}
+        text: "Price: ${:.2f}".format(root.price)
+        color: grey_light
 
 # contains all activities available for given day
 <ActivityLayout>:
-    spacing: 5
+    spacing: 10
     pos_hint: {"center_x": .5}
 
 # popup with layout containing all activities available for given day
