@@ -217,6 +217,11 @@ class MainInput(TextInput, HoverWidget):
     
     def on_hover_leave(self):
         Cursor.restore(self)
+        
+    def on_password(self, instance, value):
+        # todo: temporary solution for cursor offset
+        self.text += ' '
+        self.text = self.text[:-1]
 
 
 # toggle show and hide password in input box
@@ -237,12 +242,16 @@ class PasswordEye(HoverWidget, ToggleButton):
                           color=(.3, .3, .3, 1),
                           center=(self.center_x, self.y - 6))
         self.add_widget(self.hint)
+        # change cursor
+        Cursor.change(self, "hand")
 
     def on_hover_leave(self):
         # restore button when mouse leaves
         if self.hint:
             self.remove_widget(self.hint)
             self.hint = None
+        # restore cursor
+        Cursor.restore(self)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -267,7 +276,7 @@ class PasswordEye(HoverWidget, ToggleButton):
                 self.schedule_hide.cancel()
             self.schedule_hide = Clock.schedule_once(lambda _: setattr(self, "state", "normal"),
                                                      PASSWORD_TIMEOUT)
-
+            
 
 # close button on top right of popup
 class PopupCloseButton(RoundedBehavior, HoverWidget, Button):

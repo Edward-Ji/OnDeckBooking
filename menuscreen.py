@@ -218,6 +218,11 @@ class MealPicker(MainPopup):
         self.refresh_ref.refresh()
 
 
+"""
+Below are basic blocks that build up the calendar in main menu
+"""
+
+
 class CalendarBlock(BoxLayout):
 
     def __init__(self, **kwargs):
