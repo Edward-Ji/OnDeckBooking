@@ -78,6 +78,8 @@ class Activity:
     
     @classmethod
     def find(cls, name):
+        if name == cls.no_activity().name:
+            return cls.no_activity()
         details = tb_details.get(query.name == name)
         return cls(**details)
     
@@ -107,6 +109,11 @@ class Meal:
     @property
     def img(self):
         return find_img(self.name, MEAL_IMG_DIR)
+    
+    @classmethod
+    def find(cls, name):
+        details = db_meal.get(query.name == name)
+        return cls(**details)
     
     @classmethod
     def load(cls):

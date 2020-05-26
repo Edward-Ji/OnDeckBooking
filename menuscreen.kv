@@ -1,9 +1,6 @@
+# -----
 # activity booking widgets
-<CalendarActivityButton>:
-    color_normal: grey if self.unavailable else orange
-    color_down: grey_down if self.unavailable else orange_down
-    markup: True
-    text_size: root.width - 10, None  # wrap text at a certain width
+# -----
 
 # activity booking toggle behaviour
 <ActivityToggleBehavior>:
@@ -64,14 +61,11 @@
 <ActivityPicker>:
     size_hint: .9, .9
 
-# meal booking widgets start here
-# similar to their activity booking counterparts
-<CalendarMealButton>:
-    color_normal: grey if self.unavailable else orange
-    color_down: grey_down if self.unavailable else orange_down
-    markup: True
-    text_size: root.width - 10, None
+# -----
+# meal booking widgets
+# -----
 
+# similar to their activity booking counterparts
 <MealBlock>:
     group: "meal_picker"
     allow_no_selection: False
@@ -109,15 +103,57 @@
 <MealPicker>:
     size_hint: .9, .9
 
+# -----
 # building blocks of calendar layout
-# accounts for a single day
+# -----
+
+<BookButton>:
+    canvas.before:
+        Color:
+            rgba: white_trans
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    color_normal: white
+    color_down: white
+    background_normal: "res/book_btn_normal.png"
+    background_down: "res/book_btn_down.png"
+    size: 28, 28
+    pos_hint: {"right": 1, "top": 1}
+
+<CalendarSubBlock>:
+    day: 0
+    name: ''
+    img: ''
+
+    Image:
+        id: image
+        source: root.img
+        pos_hint: {"left": 0, "top": 1}
+
+    MainLabel:
+        canvas.before:
+            Color:
+                rgba: white_trans
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        padding: 3, 3
+        font_size: "18dp"
+        color: grey_dark
+        text: root.name
+        text_size: root.width, None
+        pos_hint: {"left": 0, "bottom": 0}
+
+# block containing activity and meal sub-block for one day
 <CalendarBlock>:
     day: 0
     doc: ''
 
     orientation: "vertical"
-    padding: 3
-    spacing: 2
+    padding: 8
+    spacing: 5
 
     canvas:
         Color:
@@ -133,21 +169,21 @@
         color: grey
 
     # call on activity booking popup for the day
-    CalendarActivityButton:
+    CalendarActivityBlock:
         id: activity_btn
         day: root.day
         size_hint: 1, 1
 
     # call on meal booking popup for the day
-    CalendarMealButton:
+    CalendarMealBlock:
         id: meal_btn
         day: root.day
         size_hint: 1, 1
 
 <CalendarLayout>:
     cols: 7
-    padding: 15
-    spacing: 8
+    padding: 10
+    spacing: 18
 
 <MenuScreen>:
     username: ''

@@ -10,6 +10,7 @@ from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.modalview import ModalView
 from kivy.uix.popup import Popup
+from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
@@ -37,8 +38,8 @@ class Cursor:
     
     @classmethod
     def restore(cls, widget):
-        if cls.trigger is widget:
-            Window.set_system_cursor(cls._default)
+        # if cls.trigger is widget:
+        Window.set_system_cursor(cls._default)
 
 
 # logo image also serves as entry to debug screen
@@ -62,7 +63,7 @@ class LogoImage(Image):
 
 # provoke event upon the start and end of mouse hovering
 class HoverWidget(Widget):
-    hovered_ins = None
+
     hovered = BooleanProperty(False)
     
     def __init__(self, **kwargs):
@@ -91,7 +92,11 @@ class HoverWidget(Widget):
         if not self.in_view:
             return
         pos = args[1]
-        inside = self.collide_point(*self.to_widget(*pos))
+        if isinstance(self.parent, RelativeLayout):
+            true_pos = self.to_widget(*pos)
+        else:
+            true_pos = self.to_window(*pos)
+        inside = self.collide_point(*true_pos)
         if self.hovered == inside:
             return
         self.hovered = inside
