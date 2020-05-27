@@ -5,71 +5,9 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.screenmanager import CardTransition, Screen
 from kivy.properties import BooleanProperty
 
-from mainwidgets import Cursor, HoverWidget, MainButton, MainPopup, SelectionPopup, MessagePopup
+from mainwidgets import HoverWidget, MainButton, MainPopup, SelectionPopup, MessagePopup
 
 from guest import *
-
-
-class BookButton(MainButton):
-    
-    def on_hover_enter(self):
-        pass
-    
-    def on_hover_leave(self):
-        pass
-    
-
-class CalendarSubBlock(HoverWidget, RelativeLayout):
-    
-    unavailable = BooleanProperty(False)
-    
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.book_btn = BookButton()
-        self.book_btn.bind(on_release=self.book)
-    
-    def on_hover_enter(self):
-        self.add_widget(self.book_btn)
-
-    def on_hover_leave(self):
-        self.remove_widget(self.book_btn)
-
-    def on_touch_up(self, touch):
-        pass
-    
-    
-class CalendarActivityBlock(CalendarSubBlock):
-    
-    def refresh(self):
-        if self.day <= Activity.BOOK_AHEAD:
-            self.name = "No activity available"
-            self.unavailable = True
-            self.remove_widget(self.ids.image)
-        else:
-            activity = Guest.get_booked("activities", self.day)
-            if activity == Activity.no_activity().name:
-                self.name = Activity.no_activity().name
-            else:
-                self.name = activity
-            self.img = Activity.find(self.name).img
-            if self.day < get_day() + Activity.BOOK_AHEAD:
-                self.unavailable = True
-            else:
-                self.unavailable = False
-
-    def book(self, *args):
-        # handle unavailable situations
-        if self.day <= Activity.BOOK_AHEAD:
-            MessagePopup(message="There are no activities available for the first three days.").open()
-        elif self.day < get_day():
-            MessagePopup(message="You can not book activities for days before!").open()
-        elif self.day < get_day() + Activity.BOOK_AHEAD:
-            MessagePopup(message="You need to book activities at least three days ahead!").open()
-        else:
-            # initiate and open activity picker popup
-            activity_picker = ActivityPicker(day=self.day)
-            activity_picker.refresh_ref = self  # save for future update
-            activity_picker.open()
 
 
 class ActivityToggleBehavior(ToggleButtonBehavior):
@@ -173,27 +111,6 @@ Below are meal booking widgets.
 """
 
 
-class CalendarMealBlock(CalendarSubBlock):
-
-    unavailable = BooleanProperty(False)
-    
-    def refresh(self):
-        self.name = Guest.get_booked("meals", self.day)
-        self.img = Meal.find(self.name).img
-        if self.day < get_day():
-            self.unavailable = True
-        else:
-            self.unavailable = False
-
-    def book(self, *args):
-        if self.day < get_day():
-            MessagePopup(message="You can not book meal for days before!").open()
-        else:
-            popup = MealPicker(day=self.day)
-            popup.refresh_ref = self
-            popup.open()
-
-
 class MealBlock(ToggleButtonBehavior, HoverWidget, BoxLayout, Meal):
 
     def __init__(self, **kwargs):
@@ -252,6 +169,89 @@ class MealPicker(MainPopup):
 """
 Below are basic blocks that build up the calendar in main menu
 """
+
+
+class BookButton(MainButton):
+    
+    def on_hover_enter(self):
+        pass
+    
+    def on_hover_leave(self):
+        pass
+
+
+class CalendarSubBlock(HoverWidget, RelativeLayout):
+    
+    unavailable = BooleanProperty(False)
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.book_btn = BookButton()
+        self.book_btn.bind(on_release=self.book)
+    
+    def on_hover_enter(self):
+        self.add_widget(self.book_btn)
+    
+    def on_hover_leave(self):
+        self.remove_widget(self.book_btn)
+    
+    def on_touch_up(self, touch):
+        pass
+    
+
+
+class CalendarActivityBlock(CalendarSubBlock):
+    
+    def refresh(self):
+        if self.day <= Activity.BOOK_AHEAD:
+            self.name = "No activity available"
+            self.unavailable = True
+            if "image" in self.ids:
+                self.remove_widget(self.ids.image)
+        else:
+            activity = Guest.get_booked("activities", self.day)
+            if activity == Activity.no_activity().name:
+                self.name = Activity.no_activity().name
+            else:
+                self.name = activity
+            self.img = Activity.find(self.name).img
+            if self.day < get_day() + Activity.BOOK_AHEAD:
+                self.unavailable = True
+            else:
+                self.unavailable = False
+    
+    def book(self, *args):
+        # handle unavailable situations
+        if self.day <= Activity.BOOK_AHEAD:
+            MessagePopup(message="There are no activities available for the first three days.").open()
+        elif self.day < get_day():
+            MessagePopup(message="You can not book activities for days before!").open()
+        elif self.day < get_day() + Activity.BOOK_AHEAD:
+            MessagePopup(message="You need to book activities at least three days ahead!").open()
+        else:
+            # initiate and open activity picker popup
+            activity_picker = ActivityPicker(day=self.day)
+            activity_picker.refresh_ref = self  # save for future update
+            activity_picker.open()
+
+
+class CalendarMealBlock(CalendarSubBlock):
+    
+    def refresh(self):
+        self.name = Guest.get_booked("meals", self.day)
+        self.img = Meal.find(self.name).img
+        if self.day <= get_day():
+            self.unavailable = True
+        else:
+            self.unavailable = False
+    
+    def book(self, *args):
+        if self.day <= get_day():
+            MessagePopup(message="You can not book meal for today or days before!").open()
+        else:
+            popup = MealPicker(day=self.day)
+            popup.refresh_ref = self
+            popup.open()
 
 
 class CalendarBlock(BoxLayout):

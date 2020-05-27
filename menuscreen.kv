@@ -129,6 +129,15 @@
 
     Image:
         id: image
+        canvas.after:
+            Color:
+                rgba:
+                    white_trans if root.unavailable else transparent
+            Rectangle:
+                id: mask
+                size: self.size
+                pos: self.pos
+
         source: root.img
         pos_hint: {"left": 0, "top": 1}
 

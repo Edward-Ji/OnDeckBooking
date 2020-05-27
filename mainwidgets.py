@@ -75,28 +75,26 @@ class HoverWidget(Widget):
     @property
     def in_view(self):
         root_widgets = App.get_running_app().root_window.children
-        if not isinstance(root_widgets[0], MessagePopup):
-            foremost = root_widgets[0]
-        else:
-            foremost = root_widgets[1]
-        parent = self.parent
-        while parent:
-            temp = parent.parent
-            if temp is foremost:
-                return True
-            if parent is temp:
-                return False
-            parent = temp
+        for widget in root_widgets:
+            if not isinstance(widget, MessagePopup):
+                foremost = widget
+                parent = self.parent
+                while parent:
+                    temp = parent.parent
+                    if temp is foremost:
+                        return True
+                    if parent is temp:
+                        return False
+                    parent = temp
     
     def on_mouse_pos(self, *args):
         if not self.in_view:
             return
         pos = args[1]
-        if isinstance(self.parent, RelativeLayout):
-            true_pos = self.to_widget(*pos)
+        if isinstance(self, RelativeLayout):
+            inside = self.collide_point(*self.to_window(*pos))
         else:
-            true_pos = self.to_window(*pos)
-        inside = self.collide_point(*true_pos)
+            inside = self.collide_point(*self.to_widget(*pos))
         if self.hovered == inside:
             return
         self.hovered = inside
@@ -322,17 +320,32 @@ class SelectionPopup(Popup):
 
 # popup label with message that fades
 class MessagePopup(ModalView):
-    current = None
+    
+    _max = 3
+    slots = [None for _ in range(_max)]
+    replace = 0
     
     def __init__(self, **kwargs):
-        if MessagePopup.current:  # only display one at a time
-            MessagePopup.current.opacity = 0
-            MessagePopup.current.dismiss()
-        MessagePopup.current = self
         self.message = kwargs.pop("message")
         self.fade = None
         self.dismiss_schedule = None
         super().__init__(**kwargs)
+        
+        # find a vacant slot or create one
+        for i in range(self._max):
+            if not self.slots[i]:
+                empty_slot = i
+                break
+        else:
+            empty_slot = MessagePopup.replace
+            MessagePopup.replace += 1
+            if MessagePopup.replace >= self._max:
+                MessagePopup.replace = 0
+            self.slots[empty_slot].dismiss()
+        self.slot_index = empty_slot
+        self.pos_hint = {"center_x": .5,
+                         "center_y": .15 + .05 * empty_slot}
+        self.slots[empty_slot] = self
     
     def on_touch_down(self, touch):
         pass
@@ -361,7 +374,7 @@ class MessagePopup(ModalView):
             self.fade.cancel(self)
         if self.dismiss_schedule:
             self.dismiss_schedule.cancel()
-        MessagePopup.current = None
+        self.slots[self.slot_index] = None
 
 
 class MainScrollView(ScrollView):
