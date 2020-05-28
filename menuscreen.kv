@@ -54,6 +54,7 @@
 
 # contains all activities available for given day
 <ActivityLayout>:
+    padding: 5
     spacing: 10
     pos_hint: {"center_x": .5}
 
@@ -97,6 +98,7 @@
         color: grey_light
 
 <MealLayout>:
+    padding: 5
     spacing: 10
     pos_hint: {"center_x": .5}
 
@@ -115,10 +117,9 @@
             size: self.size
             pos: self.pos
 
-    color_normal: white
-    color_down: white
     background_normal: "res/book_btn_normal.png"
     background_down: "res/book_btn_down.png"
+    size_hint: None, None
     size: 28, 28
     pos_hint: {"right": 1, "top": 1}
 

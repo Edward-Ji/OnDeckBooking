@@ -10,7 +10,7 @@ from tinydb import TinyDB, Query
 SALT = b"sr0te2eQ20Klubmyie"
 
 ACTIVITY_IMG_DIR = os.path.join("res", "activity_img")
-UNKNOWN_ACTIVITY_IMG = os.path.join("activity_unknown.png")
+UNKNOWN_ACTIVITY_IMG = os.path.join("activity_unknown.jpg")
 MEAL_IMG_DIR = os.path.join("res", "meal_img")
 
 NO_ACTIVITY = {"name": "No Activity",

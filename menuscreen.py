@@ -1,11 +1,12 @@
 from kivy.uix.behaviors.togglebutton import ToggleButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.screenmanager import CardTransition, Screen
 from kivy.properties import BooleanProperty
 
-from mainwidgets import HoverWidget, MainButton, MainPopup, SelectionPopup, MessagePopup
+from mainwidgets import HoverWidget, MainPopup, SelectionPopup, MessagePopup
 
 from guest import *
 
@@ -20,7 +21,7 @@ class ActivityToggleBehavior(ToggleButtonBehavior):
         if len(self.last) > 2:
             self.last.pop(0)
 
-    # allow regression when booking challenge activity
+    # allow undo when booking challenge activity
     @classmethod
     def undo(cls):
         cls.last[0].state = "down"
@@ -29,6 +30,7 @@ class ActivityToggleBehavior(ToggleButtonBehavior):
         MessagePopup(message="Booking abandoned!").open()
 
 
+# block with detailed information of one activity and booking ability
 class ActivityBlock(HoverWidget, ActivityToggleBehavior, BoxLayout, Activity):
 
     def __init__(self, **kwargs):
@@ -36,21 +38,20 @@ class ActivityBlock(HoverWidget, ActivityToggleBehavior, BoxLayout, Activity):
         if Guest.get_booked("activities", self.day) == self.name:
             self.state = "down"
         self.bind(state=self.update)
-        
+
     def on_hover_enter(self):
         if self.state == "normal":
-            self.border_color = .45, .45, .45, 1
-    
+            self.border_color = .45, .45, .45, 1  # show grey border
+
     def on_hover_leave(self):
         if self.state == "normal":
-            self.border_color = 0, 0, 0, 0
+            self.border_color = 0, 0, 0, 0  # hide grey border
     
     def on_state(self, instance, value):
         super().on_state(instance, value)
-        # update graphics
-        if self.state == "down":
+        if self.state == "down":  # show orange border for booked activity
             self.border_color = 1, .48, .15, 1
-        else:
+        else:  # remove border for unbooked activity
             self.border_color = 0, 0, 0, 0
 
     def _update(self, *args):
@@ -60,9 +61,8 @@ class ActivityBlock(HoverWidget, ActivityToggleBehavior, BoxLayout, Activity):
 
     def update(self, instance, value):
         if value == "down":
-            # allow regression when booking challenging activity
+            # confirmation required when booking challenging activity
             if self.rating == "challenging":
-                # ask when booking activity rated as challenging
                 popup = SelectionPopup(title="Warning",
                                        message="Be aware that this activity is challenging.\n"
                                                "Please confirm that you have no disability or disease "
@@ -83,7 +83,6 @@ class ActivityLayout(BoxLayout):
         super().__init__(**kwargs)
         # instantiate all activity available on the day
         for rating, activity in Activity.on_day(day=day).items():
-            # add day to instance for future update to database
             self.add_widget(ActivityBlock(name=activity.name,
                                           rating=activity.rating,
                                           desc=activity.desc,
@@ -98,11 +97,10 @@ class ActivityPicker(MainPopup):
         kwargs["title"] = "Activities available for day " + str(day)
         super().__init__(**kwargs)
         self.content.add_widget(ActivityLayout(day=day))
-        self.content.spacing = 10
 
     def dismiss(self, *largs, **kwargs):
         super().dismiss(*largs, **kwargs)
-        # refresh calendar button to show booked activity
+        # refresh calendar to show booked activity
         self.refresh_ref.refresh()
 
 
@@ -121,18 +119,16 @@ class MealBlock(ToggleButtonBehavior, HoverWidget, BoxLayout, Meal):
 
     def on_hover_enter(self):
         if self.state == "normal":
-            self.border_color = .45, .45, .45, 1
+            self.border_color = .45, .45, .45, 1  # show grey border
         
-
     def on_hover_leave(self):
         if self.state == "normal":
-            self.border_color = 0, 0, 0, 0
+            self.border_color = 0, 0, 0, 0  # hide grey border
 
     def on_state(self, instance, value):
-        # update graphics
-        if self.state == "down":
+        if self.state == "down":  # show orange border for booked activity
             self.border_color = 1, .48, .15, 1
-        else:
+        else:  # remove border for unbooked activity
             self.border_color = 0, 0, 0, 0
 
     def update(self, instance, value):
@@ -159,25 +155,20 @@ class MealPicker(MainPopup):
         kwargs["title"] = "Meals available for day " + str(day)
         super().__init__(**kwargs)
         self.content.add_widget(MealLayout(day=day))
-        self.content.spacing = 10
 
     def dismiss(self, *largs, **kwargs):
         super().dismiss(*largs, **kwargs)
+        # update calendar to show booked meal
         self.refresh_ref.refresh()
 
 
 """
-Below are basic blocks that build up the calendar in main menu
+Below are blocks that build up the calendar
 """
 
 
-class BookButton(MainButton):
-    
-    def on_hover_enter(self):
-        pass
-    
-    def on_hover_leave(self):
-        pass
+class BookButton(Button):
+    pass
 
 
 class CalendarSubBlock(HoverWidget, RelativeLayout):
@@ -199,7 +190,6 @@ class CalendarSubBlock(HoverWidget, RelativeLayout):
         pass
     
 
-
 class CalendarActivityBlock(CalendarSubBlock):
     
     def refresh(self):
@@ -208,6 +198,7 @@ class CalendarActivityBlock(CalendarSubBlock):
             self.unavailable = True
             if "image" in self.ids:
                 self.remove_widget(self.ids.image)
+                self.ids.pop("image")  # remove weak reference
         else:
             activity = Guest.get_booked("activities", self.day)
             if activity == Activity.no_activity().name:
