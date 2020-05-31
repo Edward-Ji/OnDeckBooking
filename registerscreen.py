@@ -10,8 +10,8 @@ from guest import *
 
 
 patterns = {
-    "First name": r"[A-Za-z]+$",
-    "Last name": r"[A-Za-z]+$",
+    "First name": r"[A-Za-z. ]+$",
+    "Last name": r"[A-Za-z. ]+$",
     "Username": r"\S+$",
     "Password": r".{6,}",
     "Age": r"[1-9]\d{0,2}$",
